@@ -1,0 +1,8 @@
+<div class="container">
+  <tac-base [base]="board.bases[0]"></tac-base>
+
+  <div class="track-container">
+    <tac-field *ngFor="let field of board.track" [field]="field"></tac-field>
+  </div>
+
+</div>

@@ -1,0 +1,14 @@
+.tac-field {
+  border: #000000 solid 1px;
+  border-radius: 50%;
+  background-color: white;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+.start-field {
+  border-color: #0016ff
+}
