@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GameModule } from './game/game.module';
-import {MdGridListModule} from "@angular/material";
+import {MdGridListModule} from '@angular/material';
+import {CoreModule} from './core/core.module';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import {MdGridListModule} from "@angular/material";
     BrowserModule,
     BrowserAnimationsModule,
     GameModule,
-    MdGridListModule
+    MdGridListModule,
+    CoreModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

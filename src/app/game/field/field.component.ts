@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Field } from '../model';
+import { Field } from '../../core/model.game';
 
 @Component({
   selector: 'tac-field',

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Stone} from '../model';
+import {Marble} from '../../core/model.game';
 
 @Component({
   selector: 'tac-stone',
@@ -8,7 +8,7 @@ import {Stone} from '../model';
 })
 export class StoneComponent implements OnInit {
 
-  @Input() public stone: Stone;
+  @Input() public stone: Marble;
 
   constructor() { }
 

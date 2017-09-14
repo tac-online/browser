@@ -6,13 +6,16 @@ import { BoardService } from './board.service';
 import {MdGridListModule} from '@angular/material';
 import { BaseComponent } from './base/base.component';
 import { StoneComponent } from './stone/stone.component';
+import { HomeComponent } from './home/home.component';
+import { GameComponent } from './game/game.component';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
   imports: [
     CommonModule,
     MdGridListModule
   ],
-  declarations: [BoardComponent, FieldComponent, BaseComponent, StoneComponent],
+  declarations: [BoardComponent, FieldComponent, BaseComponent, StoneComponent, HomeComponent, GameComponent, CardComponent],
   providers: [
     BoardService
   ],
@@ -20,7 +23,9 @@ import { StoneComponent } from './stone/stone.component';
     BoardComponent,
     FieldComponent,
     BaseComponent,
-    StoneComponent
+    StoneComponent,
+    GameComponent,
+    HomeComponent
   ]
 })
 export class GameModule { }

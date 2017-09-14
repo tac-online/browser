@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Base} from '../model';
+import {Base} from '../../core/model.game';
 
 @Component({
   selector: 'tac-base',

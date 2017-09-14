@@ -1,8 +1,16 @@
-<div class="container">
-  <tac-base [base]="board.bases[0]"></tac-base>
+<div class="container" *ngIf="board">
+  <tac-base [base]="board.bases[0]" class="one"></tac-base>
+  <tac-base [base]="board.bases[1]" class="two"></tac-base>
+  <tac-base [base]="board.bases[2]" class="three"></tac-base>
+  <tac-base [base]="board.bases[3]" class="four"></tac-base>
 
   <div class="track-container">
     <tac-field *ngFor="let field of board.track" [field]="field"></tac-field>
+  </div>
+
+  <div>
+    <button (click)="open.emit()">Open</button>
+    <button (click)="move.emit()">Move</button>
   </div>
 
 </div>

@@ -5,8 +5,26 @@
   position: relative;
 }
 
-tac-base {
+tac-base.one {
   position: absolute;
   top: 0;
+  left: 0;
+}
+
+tac-base.two {
+  position: absolute;
+  top: 0;
+  left: 575px;
+}
+
+tac-base.three {
+  position: absolute;
+  top: 575px;
+  left: 575px;
+}
+
+tac-base.four {
+  position: absolute;
+  top: 575px;
   left: 0;
 }

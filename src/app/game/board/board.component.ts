@@ -1,21 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {BoardService} from '../board.service';
-import {Board} from '../model';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Board, Card, Field, FieldID, Game} from '../../core/model.game';
 
 @Component({
   selector: 'tac-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent {
+  @Input() public board: Board;
 
-  public board: Board;
-
-  constructor(private boardService: BoardService) { }
-
-  ngOnInit() {
-    const names = ['1', '2', '3', '4'];
-    this.board = this.boardService.createBoard(names);
-  }
-
+  @Output() public open = new EventEmitter<any>();
+  @Output() public move = new EventEmitter<any>();
 }

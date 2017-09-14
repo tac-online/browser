@@ -1,1 +1,3 @@
-<div class="tac-field" [class.start-field]="field.startingField"></div>
+<div class="tac-field" [class.start-field]="field.startField">
+  <tac-stone *ngIf="field.occupier" [stone]="field.occupier"></tac-stone>
+</div>
