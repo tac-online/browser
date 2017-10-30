@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RestHelperService} from './rest-helper.service';
 import {RestGameService} from './rest-game.service';
+import {WebsocketService} from "./websocket.service";
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import {RestGameService} from './rest-game.service';
   declarations: [],
   providers: [
     RestHelperService,
-    RestGameService
+    RestGameService,
+    WebsocketService
   ]
 })
 export class CoreModule { }

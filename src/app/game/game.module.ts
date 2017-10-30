@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BoardComponent } from './board/board.component';
 import { FieldComponent } from './field/field.component';
 import { BoardService } from './board.service';
-import {MdGridListModule} from '@angular/material';
+import {MatGridListModule} from '@angular/material';
 import { BaseComponent } from './base/base.component';
 import { StoneComponent } from './stone/stone.component';
 import { HomeComponent } from './home/home.component';
@@ -13,7 +13,7 @@ import { CardComponent } from './card/card.component';
 @NgModule({
   imports: [
     CommonModule,
-    MdGridListModule
+    MatGridListModule
   ],
   declarations: [BoardComponent, FieldComponent, BaseComponent, StoneComponent, HomeComponent, GameComponent, CardComponent],
   providers: [

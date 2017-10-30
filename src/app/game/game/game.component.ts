@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Card, FieldID, Game} from '../../core/model.game';
-import {OpenAction, RegularMoveAction} from '../../core/model.action';
+import {FieldID, Game} from '../../core/model.game';
+import {RegularOpenAction, RegularMoveAction} from '../../core/model.action';
 import {RestGameService} from '../../core/rest-game.service';
+import {WebsocketService} from '../../core/websocket.service';
+import {Subject} from 'rxjs/Subject';
+import {Card} from '../../core/model.card';
 
 @Component({
   selector: 'tac-game',
@@ -11,12 +14,15 @@ import {RestGameService} from '../../core/rest-game.service';
 export class GameComponent implements OnInit {
 
   public game: Game;
+  private socket: Subject<any>;
 
-  constructor(private restService: RestGameService) { }
+  constructor(private restService: RestGameService, private websocketService: WebsocketService) { }
 
   ngOnInit() {
     const names = ['1', '2', '3', '4'];
     this.loadGame();
+    this.socket = this.websocketService.createWebsocket();
+    this.socket.subscribe(message => this.loadGame());
   }
 
   private loadGame() {
@@ -24,7 +30,7 @@ export class GameComponent implements OnInit {
   }
 
   public doOpen() {
-    this.restService.doAction(new OpenAction(Card.One, 0, new FieldID(0, 0, false)), (resp) => this.game = resp, () => this.loadGame());
+    this.restService.doAction(new RegularOpenAction(Card.One, 0, new FieldID(0, 0, false)), (resp) => this.game = resp, () => this.loadGame());
   }
 
   public doMove() {

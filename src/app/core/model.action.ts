@@ -1,4 +1,5 @@
-import { Card, FieldID } from './model.game';
+import { FieldID } from './model.game';
+import {Card} from './model.card';
 
 export abstract class Action {
   card: Card;
@@ -10,74 +11,99 @@ export abstract class Action {
   }
 }
 
-export class AngelMoveAction extends Action {
+export abstract class MoveAction extends Action {
   srcID: FieldID;
   destID: FieldID;
 
-  constructor(card: Card, srcID: FieldID, destID: FieldID) {
-    super(card, 'AngelMoveAction');
+  constructor(card: Card, srcID: FieldID, destID: FieldID, type: string) {
+    super(card, type);
     this.srcID = srcID;
     this.destID = destID;
   }
 }
 
-export class AngelOpenAction extends Action {
-  basenum: number;
+export class AngelMoveAction extends MoveAction {
+  constructor(card: Card, srcID: FieldID, destID: FieldID) {
+    super(card, srcID, destID, 'AngelMoveAction');
+  }
+}
+
+export class MoveBackAction extends MoveAction {
+  constructor(card: Card, srcID: FieldID, destID: FieldID) {
+    super(card, srcID, destID, 'MoveBackAction');
+  }
+}
+
+export class RegularMoveAction extends MoveAction {
+  constructor(card: Card, srcID: FieldID, destID: FieldID) {
+    super(card, srcID, destID, 'RegularMoveAction');
+  }
+}
+
+export class SevenMovePart extends MoveAction {
+  constructor(card: Card, srcID: FieldID, destID: FieldID) {
+    super(card, srcID, destID, 'SevenMovePart');
+  }
+}
+
+export abstract class OpenAction extends Action {
+  baseNumber: number;
   fieldID: FieldID;
 
-  constructor(card: Card, basenum: number, fieldID: FieldID) {
-    super(card, 'AngelOpenAction');
-    this.basenum = basenum;
+  constructor(card: Card, basenum: number, fieldID: FieldID, type: string) {
+    super(card, type);
+    this.baseNumber = basenum;
     this.fieldID = fieldID;
+  }
+}
+
+export class AngelOpenAction extends OpenAction {
+  constructor(card: Card, basenum: number, fieldID: FieldID) {
+    super(card, basenum, fieldID, 'AngelOpenAction');
+  }
+}
+
+export class RegularOpenAction extends OpenAction {
+
+  constructor(card: Card, basenum: number, fieldID: FieldID) {
+    super(card, basenum, fieldID, 'RegularOpenAction');
   }
 }
 
 export class DevilAction extends Action {
+  action: Action;
+
+  constructor(card: Card, action: Action) {
+    super(card, 'DevilAction');
+    this.action = action;
+  }
 }
 
 export class DiscardAction extends Action {
+  constructor(card: Card) {
+    super(card, 'DiscardAction');
+  }
 }
 
 export class JesterAction extends Action {
+  constructor(card: Card) {
+    super(card, 'JesterAction');
+  }
 }
 
 export class MissAction extends Action {
-}
-
-export class MoveBackAction extends Action {
-  srcID: FieldID;
-  destID: FieldID;
-
-  constructor(card: Card, srcID: FieldID, destID: FieldID) {
-    super(card, 'MoveBackAction');
-    this.srcID = srcID;
-    this.destID = destID;
-  }
-}
-
-export class OpenAction extends Action {
-  basenum: number;
-  fieldID: FieldID;
-
-  constructor(card: Card, basenum: number, fieldID: FieldID) {
-    super(card, 'OpenAction');
-    this.basenum = basenum;
-    this.fieldID = fieldID;
-  }
-}
-
-export class RegularMoveAction extends Action {
-  srcID: FieldID;
-  destID: FieldID;
-
-  constructor(card: Card,  srcID: FieldID, destID: FieldID) {
-    super(card, 'RegularMoveAction');
-    this.srcID = srcID;
-    this.destID = destID;
+  constructor(card: Card) {
+    super(card, 'MissAction');
   }
 }
 
 export class SevenAction extends Action {
+  actions: SevenMovePart[];
+
+  constructor(card: Card, actions: SevenMovePart[]) {
+    super(card, 'SevenMoveAction');
+    this.actions = actions;
+  }
 }
 
 export class TACAction extends Action {

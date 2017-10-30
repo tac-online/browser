@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GameModule } from './game/game.module';
-import {MdGridListModule} from '@angular/material';
+import {MatGridListModule} from '@angular/material';
 import {CoreModule} from './core/core.module';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -16,7 +16,7 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserModule,
     BrowserAnimationsModule,
     GameModule,
-    MdGridListModule,
+    MatGridListModule,
     CoreModule,
     HttpClientModule
   ],

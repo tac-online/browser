@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Board, Card, Field, FieldID, Game} from '../../core/model.game';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Board} from '../../core/model.game';
 
 @Component({
   selector: 'tac-board',
