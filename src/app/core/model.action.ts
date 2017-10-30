@@ -48,25 +48,23 @@ export class SevenMovePart extends MoveAction {
 
 export abstract class OpenAction extends Action {
   baseNumber: number;
-  fieldID: FieldID;
 
-  constructor(card: Card, basenum: number, fieldID: FieldID, type: string) {
+  constructor(card: Card, basenum: number, type: string) {
     super(card, type);
     this.baseNumber = basenum;
-    this.fieldID = fieldID;
   }
 }
 
 export class AngelOpenAction extends OpenAction {
-  constructor(card: Card, basenum: number, fieldID: FieldID) {
-    super(card, basenum, fieldID, 'AngelOpenAction');
+  constructor(card: Card, basenum: number, ) {
+    super(card, basenum, 'AngelOpenAction');
   }
 }
 
 export class RegularOpenAction extends OpenAction {
 
-  constructor(card: Card, basenum: number, fieldID: FieldID) {
-    super(card, basenum, fieldID, 'RegularOpenAction');
+  constructor(card: Card, basenum: number) {
+    super(card, basenum, 'RegularOpenAction');
   }
 }
 
