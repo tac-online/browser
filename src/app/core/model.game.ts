@@ -72,11 +72,13 @@ export class Game {
   board: Board;
   players: Player[];
   cards: Card[][];
+  currentCard: Card;
 
-  constructor(board: Board, players: Player[], cards: Card[][]) {
+  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card) {
     this.board = board;
     this.players = players;
     this.cards = cards;
+    this.currentCard = currentCard;
   }
 }
 

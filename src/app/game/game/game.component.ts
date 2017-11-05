@@ -30,11 +30,15 @@ export class GameComponent implements OnInit {
   }
 
   public doOpen() {
-    this.restService.doAction(new RegularOpenAction(Card.One, 0, new FieldID(0, 0, false)), (resp) => this.game = resp, () => this.loadGame());
+    this.restService.doAction(new RegularOpenAction(Card.Thirteen, 0), (resp) => this.game = resp, () => this.loadGame());
   }
 
   public doMove() {
     this.restService.doAction(new RegularMoveAction(Card.One, new FieldID(0, 0, false), new FieldID(1, 0, false)), (resp) => this.game = resp, () => this.loadGame());
+  }
+
+  public playCard(card: Card) {
+    this.restService.playCard(card, () => null, this.loadGame);
   }
 
 }

@@ -1,1 +1,5 @@
-<tac-board *ngIf="game" [board]="game.board" (move)="doMove()" (open)="doOpen()"></tac-board>
+<tac-board *ngIf="game" [board]="game.board" (move)="doMove()" (open)="doOpen()" [currentCard]="game.currentCard"></tac-board>
+
+<div *ngIf="game">
+  <tac-card *ngFor="let card of game.cards[0]" [card]="card" (playCard)="playCard($event)"></tac-card>
+</div>

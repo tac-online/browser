@@ -21,4 +21,12 @@ export enum Card {
   Devil = 'Devil'
 }
 
+export class CardContainer {
+  card: Card;
+
+  constructor(card: Card) {
+    this.card = card;
+  }
+}
+
 export const ACTIONS: (() => Action)[] = [];
