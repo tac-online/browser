@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {FieldID, Game} from '../../core/model.game';
-import {RegularOpenAction, RegularMoveAction} from '../../core/model.action';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Field, Game, Position} from '../../core/model.game';
+import {Action} from '../../core/model.action';
 import {RestGameService} from '../../core/rest-game.service';
 import {WebsocketService} from '../../core/websocket.service';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {Card} from '../../core/model.card';
+import {ActionService} from '../action.service';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ImagemapComponent} from '../imagemap/imagemap.component';
+import {Coordinates} from '../../core/model.positions';
 
 @Component({
   selector: 'tac-game',
@@ -13,32 +17,126 @@ import {Card} from '../../core/model.card';
 })
 export class GameComponent implements OnInit {
 
-  public game: Game;
-  private socket: Subject<any>;
+  @ViewChild('board')
+  private board: ImagemapComponent;
 
-  constructor(private restService: RestGameService, private websocketService: WebsocketService) { }
+  set game(game: Game) {
+    this._game = game;
+    if (game && game.currentCard) {
+      this.doAction();
+    }
+  }
+  get game(): Game {
+    return this._game;
+  }
+
+  private _game: Game;
+  private socket: Subject<any>;
+  public pickFieldResolve: (Field) => void;
+  public pressButtonResolve: () => void;
+  public buttonText: string;
+  public pickMarbleResolve: (Position) => void;
+  public chooseCardDevilResolve: (Card) => void;
+  public gameName: string;
+
+  constructor(private restService: RestGameService, private websocketService: WebsocketService, private actionService: ActionService, private route: ActivatedRoute, public router: Router) { }
 
   ngOnInit() {
     const names = ['1', '2', '3', '4'];
-    this.loadGame();
+    this.route.params.subscribe((params: Params) => this.loadData(params));
+  }
+
+  private loadData(params: Params) {
+    this.gameName = params['game'];
+    this.loadGame(this.gameName);
     this.socket = this.websocketService.createWebsocket();
-    this.socket.subscribe(message => this.loadGame());
+    this.socket.subscribe(() => this.loadGame(this.gameName));
   }
 
-  private loadGame() {
-    this.restService.getGame((resp) => this.game = resp, () => this.loadGame());
+  private loadGame(game: string) {
+    this.restService.getGame(game, (resp) => this.game = resp, () => this.loadGame(game));
   }
 
-  public doOpen() {
-    this.restService.doAction(new RegularOpenAction(Card.Thirteen, 0), (resp) => this.game = resp, () => this.loadGame());
+  public doAction() {
+    if (this.board) {
+      this.board.highlights = [];
+      this.board.draw(false);
+    }
+    this.pressButtonResolve = null;
+    this.pickFieldResolve = null;
+    this.pickMarbleResolve = null;
+    this.chooseCardDevilResolve = null;
+    this.actionService.doAction(this.game.currentCard, this).then(action => this.sendAction(action)).catch(() => this.doAction());
   }
 
-  public doMove() {
-    this.restService.doAction(new RegularMoveAction(Card.One, new FieldID(0, 0, false), new FieldID(1, 0, false)), (resp) => this.game = resp, () => this.loadGame());
+  public sendAction(action: Action) {
+    this.pressButtonResolve = null;
+    this.pickFieldResolve = null;
+    this.pickMarbleResolve = null;
+    this.chooseCardDevilResolve = null;
+    this.restService.doAction(this.gameName, action, (resp) => this.game = resp, () => this.doAction());
   }
 
   public playCard(card: Card) {
-    this.restService.playCard(card, () => null, this.loadGame);
+    this.restService.playCard(this.gameName, card, () => null, () => this.loadGame(this.gameName));
   }
 
+  public pickField(): Promise<Field> {
+    return new Promise<Field>(resolve => {
+      this.pickFieldResolve = resolve;
+    });
+  }
+
+  public pickMarble(): Promise<Position> {
+    return new Promise<Position>(resolve => {
+      this.pickMarbleResolve = resolve;
+    });
+  }
+
+  public pickCardDevil(): Promise<Card> {
+    return new Promise<Card>(resolve => {
+      this.chooseCardDevilResolve = resolve;
+    });
+  }
+
+  public pressButton(text: string): Promise<any> {
+    this.buttonText = text;
+    return new Promise<any>(resolve => {
+      this.pressButtonResolve = resolve;
+    });
+  }
+
+  public buttonPressed() {
+    if (this.pressButtonResolve) {
+      this.pressButtonResolve();
+      this.pressButtonResolve = null;
+    }
+  }
+
+  public fieldPicked(event: {field: Field, coords: Coordinates}) {
+    if (this.pickFieldResolve) {
+      this.pickFieldResolve(event.field);
+      this.pickFieldResolve = null;
+      this.board.highlights.push(event.coords);
+      this.board.draw(false);
+    }
+  }
+
+  public marblePicked(event: {marble: Position, coords: Coordinates}) {
+    if (this.pickMarbleResolve) {
+      this.pickMarbleResolve(event.marble);
+      this.pickMarbleResolve = null;
+      this.board.highlights.push(event.coords);
+      this.board.draw(false);
+    }
+  }
+
+
+
+  public cardChosen(card: Card) {
+    if (this.chooseCardDevilResolve) {
+      this.chooseCardDevilResolve(card);
+      this.chooseCardDevilResolve = null;
+    }
+  }
 }

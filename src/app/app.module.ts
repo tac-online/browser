@@ -3,10 +3,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { GameModule } from './game/game.module';
-import {MatGridListModule} from '@angular/material';
 import {CoreModule} from './core/core.module';
 import {HttpClientModule} from '@angular/common/http';
+import {RoutingModule} from './routing.module';
+import {GameModule} from './game/game.module';
+import {LobbyModule} from './lobby/lobby.module';
+import {SharedModule} from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,10 +17,12 @@ import {HttpClientModule} from '@angular/common/http';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    GameModule,
-    MatGridListModule,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
+    RoutingModule,
+    GameModule,
+    LobbyModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

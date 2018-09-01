@@ -8,6 +8,26 @@ export class Player {
   }
 }
 
+export class Position {
+  isBase: boolean;
+  field: Field;
+  base: Base;
+
+  constructor(base: Base, field: Field, isBase: boolean) {
+    this.base = base;
+    this.isBase = isBase;
+    this.field = field;
+  }
+
+  public static fromBase(base: Base): Position {
+    return new Position(base, null, true);
+  }
+
+  public static fromField(field: Field): Position {
+    return new Position(null, field, false);
+  }
+}
+
 export class Marble {
   owner: number;
   moved: boolean;
@@ -44,6 +64,10 @@ export class FieldID {
     this.player = player;
     this.homeField = homeField;
   }
+
+  public static fromField(field: Field): FieldID {
+    return new FieldID(field.number, field.player, field.homeField);
+  }
 }
 
 export class Base {
@@ -73,12 +97,43 @@ export class Game {
   players: Player[];
   cards: Card[][];
   currentCard: Card;
+  turn: number;
 
-  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card) {
+  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card, turn: number) {
     this.board = board;
     this.players = players;
     this.cards = cards;
     this.currentCard = currentCard;
+    this.turn = turn;
   }
+}
+
+
+
+export abstract class Subaction {
+  type: string;
+
+  constructor(type: string) {
+    this.type = type;
+  }
+}
+
+export class PickMarbleSubaction extends Subaction {
+  marble: Position;
+
+  constructor(marble: Position) {
+    super('marble');
+    this.marble = marble;
+  }
+}
+
+export class PickFieldSubaction extends Subaction {
+  field: Field;
+
+  constructor(field: Field) {
+    super('field');
+    this.field = field;
+  }
+
 }
 

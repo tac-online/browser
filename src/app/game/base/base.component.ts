@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Base} from '../../core/model.game';
 
 @Component({
@@ -9,6 +9,7 @@ import {Base} from '../../core/model.game';
 export class BaseComponent implements OnInit {
 
   @Input() public base: Base;
+  @Output() public clickBase = new EventEmitter<any>();
 
   constructor() { }
 

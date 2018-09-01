@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { TestLobbyComponent } from './test-lobby/test-lobby.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule
+    SharedModule
   ],
-  declarations: []
+  declarations: [TestLobbyComponent]
 })
 export class LobbyModule { }

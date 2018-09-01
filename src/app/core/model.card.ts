@@ -1,4 +1,4 @@
-import {Action, RegularMoveAction} from './model.action';
+
 
 export enum Card {
   One = 'One',
@@ -29,4 +29,28 @@ export class CardContainer {
   }
 }
 
-export const ACTIONS: (() => Action)[] = [];
+// export function getPossibleActions(card: Card): SubactionSequence[] {
+//   switch (card) {
+//     case null:
+//       return [];
+//     case Card.Thirteen:
+//     case Card.One:
+//       return [
+//         new SubactionSequence([new PickMarble(), new PickField()], (seq: SubactionSequence) => {
+//           const field = seq.getResult(0);
+//           if (field) {
+//             return new RegularOpenAction(card, field.toFieldID().player);
+//           } else {
+//             return new RegularMoveAction(card, field.toFieldID(), seq.getResult(1).toFieldID());
+//           }
+//         })
+//       ];
+//     default:
+//       return [
+//         new SubactionSequence([new PickMarble(), new PickField()], (seq: SubactionSequence) => {
+//           const field = seq.getResult(0);
+//           return new RegularMoveAction(card, field.toFieldID(), seq.getResult(1).toFieldID());
+//         })
+//       ];
+//   }
+// }

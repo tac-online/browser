@@ -1,5 +1,5 @@
 .tac-stone {
-  border: #000000 solid 0.75em;
+  border: #000000 solid 0.8em;
   border-radius: 50%;
   background-color: white;
   -webkit-box-sizing: border-box;
@@ -10,7 +10,7 @@
 }
 
 .tac-stone.one {
-  border-color: black;
+  border-color: blueviolet;
 }
 
 .tac-stone.two {

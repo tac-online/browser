@@ -1,0 +1,9 @@
+<img hidden id="marble0" [src]="'assets/black1.png'" (load)="draw(false)">
+<img hidden id="marble1" [src]="'assets/blue1.png'" (load)="draw(false)">
+<img hidden id="marble2" [src]="'assets/green1.png'" (load)="draw(false)">
+<img hidden id="marble3" [src]="'assets/red1.png'" (load)="draw(false)">
+
+<div class="img-map" #container (window:resize)="draw(true)">
+  <img #image [src]="'assets/board.jpg'" (load)="draw(true)">
+  <canvas #canvas (click)="onClick($event)" (mousemove)="onMousemove($event)" (mouseout)="onMouseout()"></canvas>
+</div>

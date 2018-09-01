@@ -8,7 +8,24 @@
   width: 100%;
   height: 100%;
   display: inline-block;
+  padding: -1px;
 }
-.start-field {
-  border-color: #0016ff
+.tac-field.highlighted {
+  border-color: darkcyan;
+}
+
+.start-field.player-0 {
+  border-color: blueviolet;
+}
+
+.start-field.player-1 {
+  border-color: blue;
+}
+
+.start-field.player-2 {
+  border-color: red;
+}
+
+.start-field.player-3 {
+  border-color: limegreen;
 }

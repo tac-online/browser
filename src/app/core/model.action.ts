@@ -56,7 +56,7 @@ export abstract class OpenAction extends Action {
 }
 
 export class AngelOpenAction extends OpenAction {
-  constructor(card: Card, basenum: number, ) {
+  constructor(card: Card, basenum: number) {
     super(card, basenum, 'AngelOpenAction');
   }
 }
@@ -99,7 +99,7 @@ export class SevenAction extends Action {
   actions: SevenMovePart[];
 
   constructor(card: Card, actions: SevenMovePart[]) {
-    super(card, 'SevenMoveAction');
+    super(card, 'SevenAction');
     this.actions = actions;
   }
 }

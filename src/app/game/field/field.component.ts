@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Field } from '../../core/model.game';
 
 @Component({
@@ -10,9 +10,22 @@ export class FieldComponent implements OnInit {
 
   @Input() public field: Field;
 
+  @Output() public clickField = new EventEmitter<any>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public getClasses(): string {
+    let classes = 'tac-field';
+    if (this.field.startField) {
+      classes += ' start-field player-' + this.field.player;
+    }
+    if (this.field.number % 4 == 0) {
+      classes += ' highlighted';
+    }
+    return classes;
   }
 
 }

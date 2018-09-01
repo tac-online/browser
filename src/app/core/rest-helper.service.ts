@@ -1,16 +1,16 @@
+
+import {timeout} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs/Observable';
-import {timeout} from 'rxjs/operators';
-import {CustomError} from './model';
+import {CustomError, Status, Version} from './model';
+import {ModalService} from './modal.service';
 
 @Injectable()
 export class RestHelperService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private modalService: ModalService) {
     this.baseUrl = 'http://assault2142.eu:8080/tac-server/webapi/';
   }
 
@@ -18,52 +18,42 @@ export class RestHelperService {
     return new HttpHeaders();
   }
 
-  public getCustomError<T>(url: string, success: (resp: T) => void, handleError: (error: any) => void, headers: HttpHeaders = this.getHeaders(), timeout: number = 5000): Observable<T> {
-    const response = this.http.get<T>(url, {headers: headers}).timeout(timeout);
-    response.subscribe(res => success(res), error => handleError(error));
-    return response;
+  public get<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+    const response = this.http.get<Status<T>>(url, {headers: headers}).pipe(timeout(5000));
+    response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public get<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const handle = (error: any) => this.handleError(error, reload);
-    return this.getCustomError(url, success, handle, headers);
+  public put<T, U>(url: string, data: U, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+    const value = this.http.put<Status<T>>(url, data, {headers: headers}).pipe(timeout(5000));
+    value.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public putCustomError<T, U>(url: string, data: U, success: (resp: T) => void, handleError: (error: any) => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const value = this.http.put<T>(url, data, {headers: headers}).timeout(5000);
-    value.subscribe(res => success(res), error => handleError(error));
-    return value;
+  public post<T, U>(url: string, data: U, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+    const value = this.http.post<Status<T>>(url, data, {headers: headers}).pipe(timeout(5000));
+    value.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public put<T, U>(url: string, data: U, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const handle = (error: any) => this.handleError(error, reload);
-    return this.putCustomError(url, data, success, handle, headers);
+  public delete<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+    const response = this.http.delete<Status<T>>(url, {headers: headers}).pipe(timeout(5000));
+    response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public postCustomError<T, U>(url: string, data: U, success: (resp: T) => void, handleError: (error: any) => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const value = this.http.post<T>(url, data, {headers: headers}).timeout(5000);
-    value.subscribe(res => success(res), error => handleError(error));
-    return value;
-  }
-
-  public post<T, U>(url: string, data: U, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const handle = (error: any) => this.handleError(error, reload);
-    return this.postCustomError(url, data, success, handle, headers);
-  }
-
-  public deleteCustomError<T>(url: string, success: (resp: T) => void, handleError: (error: any) => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const response = this.http.delete<T>(url, {headers: headers}).timeout(5000);
-    response.subscribe(res => success(res), error => handleError(error));
-    return response;
-  }
-
-  public delete<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()): Observable<T> {
-    const handle = (error: any) => this.handleError(error, reload);
-    return this.deleteCustomError(url, success, handle, headers);
+  public getInterfaceVersion(success: (resp: Version) => void, reload: () => void) {
+    const url = this.baseUrl + 'version';
+    this.get(url, success, reload, new HttpHeaders());
   }
 
   public getGameURL(): string {
-    return this.baseUrl + 'game';
+    return this.baseUrl + 'game/';
+  }
+
+  private handleStatus<T>(status: Status<T>, success: (resp: T) => void, reload: () => void) {
+    if (status.error) {
+      this.modalService.show(new CustomError(status.message, reload, status.message !== 'MOVE_NOT_ALLOWED'));
+      if (status.message === 'MOVE_NOT_ALLOWED') reload();
+    } else {
+      success(status.value);
+    }
   }
 
   /**
@@ -74,11 +64,6 @@ export class RestHelperService {
    */
   public handleError(error: any, reload: () => void) {
     console.log(error);
-    // ticket timed-out, request a new one from CAS-server
-    if (error.status && error.status === 408) {
-      window.location.href = 'https://sso.hrz.tu-darmstadt.de/login?service=' + window.location.href.split('?')[0];
-      return;
-    }
     let error2: CustomError;
     if (error.name === 'TimeoutError' || error.status === 0) {
       error2 = new CustomError('TimeoutError', reload, true);
@@ -87,7 +72,6 @@ export class RestHelperService {
     } else {
       error2 = new CustomError(error.message, reload, false);
     }
-    // this.modalService.show(error2);
+    this.modalService.show(error2);
   }
-
 }

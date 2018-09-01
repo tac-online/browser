@@ -1,6 +1,4 @@
-.container {
-  width: 40em;
-  height: 40em;
+.board-container {
   margin: 0 auto;
   position: relative;
 }

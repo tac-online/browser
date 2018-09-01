@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Board} from '../../core/model.game';
+import {Base, Board, Field, Position} from '../../core/model.game';
 import {Card} from '../../core/model.card';
 
 @Component({
@@ -11,6 +11,19 @@ export class BoardComponent {
   @Input() public board: Board;
   @Input() public currentCard: Card;
 
-  @Output() public open = new EventEmitter<any>();
-  @Output() public move = new EventEmitter<any>();
+  @Output() public clickField = new EventEmitter<Field>();
+  @Output() public clickMarble = new EventEmitter<Position>();
+
+  public clicked(field: Field) {
+    this.clickField.emit(field);
+    if (field.occupier) {
+      this.clickMarble.emit(Position.fromField(field));
+    }
+  }
+
+  public clickedBase(base: Base) {
+    if (base.occupiers.length > 0) {
+      this.clickMarble.emit(Position.fromBase(base));
+    }
+  }
 }

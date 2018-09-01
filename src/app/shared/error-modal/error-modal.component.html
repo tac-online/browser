@@ -1,0 +1,24 @@
+<div bsModal #connErrorModal="bs-modal" class="modal fade" id="connErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" [config]="{backdrop: 'static'}">
+  <div *ngIf="error" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel" i18n="@@error">Fehler</h4>
+      </div>
+      <div [ngSwitch]="error.message" class="modal-body">
+        <span *ngSwitchCase="'TimeoutError'" i18n="@@errormodal_serverUnreachable">Server nicht erreichbar. Bitte prüfen Sie ihre Internetverbindung.</span>
+        <span *ngSwitchCase="'UNKNOWN_GAME'" i18n="@@errormodal_noAccess">Dieses Spiel existiert nicht.</span>
+        <span *ngSwitchCase="'MOVE_NOT_ALLOWED'" i18n="@@errormodal_noAccess">Dieser Zug ist nicht erlaubt.</span>
+        <span *ngSwitchDefault><ng-container i18n="@@unexpectedError">Unbekannter Fehler</ng-container>: {{error.message}}</span>
+      </div>
+      <div *ngIf="error.critical; else notCritical" class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="reload()" i18n="@@retry">Erneut versuchen</button>
+        <button type="button" class="btn btn-default" routerLink="/" (click)="hide()" i18n="@@errormodal_backToStart">Zurück zur Übersicht</button>
+      </div>
+      <ng-template #notCritical>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="hide()" i18n="@@close">Schließen</button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
