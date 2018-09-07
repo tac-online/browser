@@ -4,7 +4,7 @@ import {Card} from '../core/model.card';
 import {FieldID} from '../core/model.game';
 import {
   Action,
-  AngelMoveAction, AngelOpenAction, DevilAction,
+  AngelMoveAction, AngelOpenAction, DevilAction, DevilCardAction,
   JesterAction,
   MissAction,
   MoveBackAction,
@@ -117,11 +117,19 @@ export class ActionService {
         });
 
       case Card.Devil:
-        return new Promise<Action>(resolve => {
-          gameComp.pickCardDevil().then(devilcard => {
-            this.doAction(devilcard, gameComp).then(action => resolve(new DevilAction(card, action)));
+        if (gameComp.game.devilPlayed) {
+          return new Promise<Action>(resolve => {
+            this.doAction(gameComp.game.devilCard, gameComp).then(action => resolve(new DevilAction(card, action)));
           });
-        });
+        } else {
+          return new Promise<Action>(resolve => {
+            gameComp.pickCardDevil().then(devilcard => {
+              this.restService.doAction(gameComp.gameName, new DevilCardAction(card, devilcard), () => {}, () => {
+                this.doAction(card, gameComp);
+              });
+            });
+          });
+        }
 
       default:
         return new Promise<Action>((resolve, reject) => {

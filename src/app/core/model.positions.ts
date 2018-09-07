@@ -115,9 +115,9 @@ export const HOMES: HomePosition[] = [
 ];
 
 export const BASES: BasePosition[] = [
-  new BasePosition(0,  78,  78),
+  new BasePosition(0,  905,  905),
   new BasePosition(1,  78, 905),
-  new BasePosition(2, 905, 905),
+  new BasePosition(2, 78, 78),
   new BasePosition(3, 905,  78)
 ];
 

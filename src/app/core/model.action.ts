@@ -77,6 +77,15 @@ export class DevilAction extends Action {
   }
 }
 
+export class DevilCardAction extends Action {
+  devilCard: Card;
+
+  constructor(card: Card, devilCard: Card) {
+    super(card, 'DevilCardAction');
+    this.devilCard = devilCard;
+  }
+}
+
 export class DiscardAction extends Action {
   constructor(card: Card) {
     super(card, 'DiscardAction');

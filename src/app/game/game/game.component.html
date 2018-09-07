@@ -27,10 +27,11 @@
     </div>
 
     <div *ngIf="chooseCardDevilResolve">
+      Wähle eine Karte des nächsten Spielers
       <tac-card *ngFor="let card of game.cards[(game.turn + 1) % 4]" [card]="card" (playCard)="cardChosen(card)"></tac-card>
     </div>
 
-    <button *ngIf="game && game.currentCard" (click)="doAction()">Zurücksetzen</button>
+    <button *ngIf="game && game.currentCard" (click)="doAction()">Auswahl zurücksetzen</button>
 
   </div>
 

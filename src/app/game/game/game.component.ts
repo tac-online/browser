@@ -74,6 +74,10 @@ export class GameComponent implements OnInit {
     this.pickFieldResolve = null;
     this.pickMarbleResolve = null;
     this.chooseCardDevilResolve = null;
+    if (this.board) {
+      this.board.highlights = [];
+      this.board.draw(false);
+    }
     this.restService.doAction(this.gameName, action, (resp) => this.game = resp, () => this.doAction());
   }
 

@@ -98,13 +98,17 @@ export class Game {
   cards: Card[][];
   currentCard: Card;
   turn: number;
+  devilPlayed: boolean;
+  devilCard: Card;
 
-  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card, turn: number) {
+  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card, turn: number, devilPlayed: boolean, devilCard: Card) {
     this.board = board;
     this.players = players;
     this.cards = cards;
     this.currentCard = currentCard;
     this.turn = turn;
+    this.devilPlayed = devilPlayed;
+    this.devilCard = devilCard;
   }
 }
 
