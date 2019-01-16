@@ -42,7 +42,9 @@ export class ActionService {
         return new Promise<Action>(resolve => {
           gameComp.pickMarble().then(marble => {
             if (!marble.isBase) {
-              resolve(new WarriorAction(card, FieldID.fromField(marble.field)));
+              const srcID = FieldID.fromField(marble.field);
+              srcID.player = marble.field.occupier.owner;
+              resolve(new WarriorAction(card, srcID));
             }
           });
         });
@@ -53,7 +55,11 @@ export class ActionService {
             if (!marble.isBase) {
               gameComp.pickMarble().then(marble2 => {
                 if (!marble2.isBase) {
-                  resolve(new TricksterAction(card, FieldID.fromField(marble.field), FieldID.fromField(marble2.field)));
+                  const srcID = FieldID.fromField(marble.field);
+                  srcID.player = marble.field.occupier.owner;
+                  const destID = FieldID.fromField(marble2.field);
+                  destID.player = marble2.field.occupier.owner;
+                  resolve(new TricksterAction(card, srcID, destID));
                 }
               });
             }
@@ -66,7 +72,11 @@ export class ActionService {
             gameComp.pickField().then(field => {
               let action: Action;
               if (!marble.isBase) {
-                action = new MoveBackAction(card, FieldID.fromField(marble.field), FieldID.fromField(field));
+                const srcID = FieldID.fromField(marble.field);
+                srcID.player = marble.field.occupier.owner;
+                const destID = FieldID.fromField(field);
+                destID.player = marble.field.occupier.owner;
+                action = new MoveBackAction(card, srcID, destID);
               }
               resolve(action);
             });
@@ -79,7 +89,11 @@ export class ActionService {
             gameComp.pickField().then(field => {
               let action: Action;
               if (!marble.isBase) {
-                action = new RegularMoveAction(card, FieldID.fromField(marble.field), FieldID.fromField(field));
+                const srcID = FieldID.fromField(marble.field);
+                srcID.player = marble.field.occupier.owner;
+                const destID = FieldID.fromField(field);
+                destID.player = marble.field.occupier.owner;
+                action = new RegularMoveAction(card, srcID, destID);
               }
               resolve(action);
             });
@@ -101,7 +115,11 @@ export class ActionService {
               resolve(new AngelOpenAction(card, marble.base.player));
             } else {
               gameComp.pickField().then(field => {
-                resolve(new AngelMoveAction(card, FieldID.fromField(marble.field), FieldID.fromField(field)));
+                const srcID = FieldID.fromField(marble.field);
+                srcID.player = marble.field.occupier.owner;
+                const destID = FieldID.fromField(field);
+                destID.player = marble.field.occupier.owner;
+                resolve(new AngelMoveAction(card, srcID, destID));
               });
             }
           });
@@ -137,7 +155,11 @@ export class ActionService {
             gameComp.pickField().then(field => {
               let action: Action;
               if (!marble.isBase) {
-                action = new RegularMoveAction(card, FieldID.fromField(marble.field), FieldID.fromField(field));
+                const srcID = FieldID.fromField(marble.field);
+                srcID.player = marble.field.occupier.owner;
+                const destID = FieldID.fromField(field);
+                destID.player = marble.field.occupier.owner;
+                action = new RegularMoveAction(card, srcID, destID);
               }
               resolve(action);
             });

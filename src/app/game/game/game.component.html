@@ -13,6 +13,11 @@
           <tac-card *ngFor="let card of cards" [card]="card" (playCard)="playCard($event)"></tac-card>
       </div>
     </div>
+
+    <div>
+      <button (mouseover)="showLastTurn()" (mouseout)="hideLastTurn()">Letzten Zug zeigen</button>
+    </div>
+
     <h3 *ngIf="game && game.currentCard">Mögliche Aktionen für <span class="label label-default">{{game.currentCard}}</span></h3>
 
     <div *ngIf="pickMarbleResolve">
@@ -35,6 +40,6 @@
 
   </div>
 
-  <img-map class="col-md-50" *ngIf="game" [board]="game.board" [currentCard]="game.currentCard" (clickField)="fieldPicked($event)" (clickMarble)="marblePicked($event)" #board></img-map>
+  <img-map class="col-md-50" *ngIf="game" [board]="game.board" [currentCard]="game.currentCard" [specialMarbles]="specialMarbles" (clickField)="fieldPicked($event)" (clickMarble)="marblePicked($event)" #board></img-map>
 </div>
 

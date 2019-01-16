@@ -11,8 +11,11 @@ export class FieldPosition extends Coordinates {
 }
 
 export class MarblePosition extends Coordinates {
-  constructor(public player: number, public x: number, public y: number) {
+  transparent: boolean;
+
+  constructor(public player: number, public x: number, public y: number, transparent: boolean) {
     super(x, y, MARBLERADIUS);
+    this.transparent = transparent;
   }
 }
 

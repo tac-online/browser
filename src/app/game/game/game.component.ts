@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Field, Game, Position} from '../../core/model.game';
-import {Action} from '../../core/model.action';
+import {Field, FieldID, Game, Position} from '../../core/model.game';
+import {Action, MoveAction, OpenAction, RegularOpenAction, TricksterAction} from '../../core/model.action';
 import {RestGameService} from '../../core/rest-game.service';
 import {WebsocketService} from '../../core/websocket.service';
 import {Subject} from 'rxjs';
@@ -38,6 +38,8 @@ export class GameComponent implements OnInit {
   public pickMarbleResolve: (Position) => void;
   public chooseCardDevilResolve: (Card) => void;
   public gameName: string;
+
+  public specialMarbles: [FieldID, boolean][] = [];
 
   constructor(private restService: RestGameService, private websocketService: WebsocketService, private actionService: ActionService, private route: ActivatedRoute, public router: Router) { }
 
@@ -142,5 +144,25 @@ export class GameComponent implements OnInit {
       this.chooseCardDevilResolve(card);
       this.chooseCardDevilResolve = null;
     }
+  }
+
+  public showLastTurn() {
+    this.specialMarbles = [];
+    if (this.game.lastAction.type.includes('Move')) {
+      const action = <MoveAction> this.game.lastAction;
+      this.specialMarbles.push([action.srcID, false]);
+      this.specialMarbles.push([action.destID, true]);
+    } else if (this.game.lastAction.type.includes('OpenAction')) {
+      const action = <OpenAction> this.game.lastAction;
+      this.specialMarbles.push([new FieldID(action.baseNumber * 16, action.baseNumber, false), true]);
+    } else if (this.game.lastAction.type.includes('TricksterAction')) {
+      const action = <TricksterAction> this.game.lastAction;
+      this.specialMarbles.push([action.firstID, true]);
+      this.specialMarbles.push([action.secondID, true]);
+    }
+  }
+
+  public hideLastTurn() {
+    this.specialMarbles = [];
   }
 }

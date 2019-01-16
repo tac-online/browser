@@ -13,7 +13,7 @@ import {
   MarblePosition,
   MARBLERADIUS
 } from '../../core/model.positions';
-import {Board, Field, Position} from '../../core/model.game';
+import {Board, Field, FieldID, Position} from '../../core/model.game';
 import {Card} from '../../core/model.card';
 
 @Component({
@@ -24,8 +24,6 @@ import {Card} from '../../core/model.card';
 export class ImagemapComponent {
 
   constructor(private renderer: Renderer2) {}
-
-
 
   /**
    * Canvas element.
@@ -57,6 +55,20 @@ export class ImagemapComponent {
   }
   private _board: Board;
 
+  @Input('specialMarbles')
+  set specialMarbles(specialMarbles: [FieldID, boolean][]) {
+    this._specialMarbles = [];
+    for (const specialMarble of specialMarbles) {
+      if (specialMarble[0].homeField) {
+        this.homes.filter(home => home.id === specialMarble[0].number && home.player === specialMarble[0].player).forEach(home => this._specialMarbles.push(new MarblePosition(home.player, home.x, home.y, specialMarble[1])));
+      } else {
+        this.track.filter(field => field.id === specialMarble[0].number).forEach(field => this._specialMarbles.push(new MarblePosition(specialMarble[0].player, field.x, field.y, specialMarble[1])));
+      }
+    }
+    this.draw(false);
+  }
+  private _specialMarbles: MarblePosition[] = [];
+
   public highlights: Coordinates[] = [];
 
   @Output() public clickField = new EventEmitter<{field: Field, coords: Coordinates}>();
@@ -86,30 +98,30 @@ export class ImagemapComponent {
     ) < position.radius;
   }
 
-  private findMarbles() {
+  public findMarbles() {
     this.marbles = [];
     if (!this.track || !this.bases || !this.homes) {
       this.init();
     }
-    this._board.track.filter(field => field.occupier).forEach(field => this.track.filter(position => position.id === field.number).forEach(position => this.marbles.push(new MarblePosition(field.occupier.owner, position.x, position.y))));
+    this._board.track.filter(field => field.occupier).forEach(field => this.track.filter(position => position.id === field.number).forEach(position => this.marbles.push(new MarblePosition(field.occupier.owner, position.x, position.y, field.occupier.transparent))));
     this._board.bases.filter(base => base.occupiers.length >= 0).forEach(base => this.bases.filter(position => position.player === base.player).forEach(position => {
       if (base.occupiers.length === 1) {
-        this.marbles.push(new MarblePosition(base.player, position.x, position.y));
+        this.marbles.push(new MarblePosition(base.player, position.x, position.y, false));
       } else if (base.occupiers.length === 2) {
-        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y));
-        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y));
+        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y, false));
+        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y, false));
       } else if (base.occupiers.length === 3) {
-        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y - MARBLERADIUS * 0.7));
-        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y - MARBLERADIUS * 0.7));
-        this.marbles.push(new MarblePosition(base.player, position.x, position.y + MARBLERADIUS));
+        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y - MARBLERADIUS * 0.7, false));
+        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y - MARBLERADIUS * 0.7, false));
+        this.marbles.push(new MarblePosition(base.player, position.x, position.y + MARBLERADIUS, false));
       } else if (base.occupiers.length === 4) {
-        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y - MARBLERADIUS));
-        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y - MARBLERADIUS));
-        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y + MARBLERADIUS));
-        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y + MARBLERADIUS));
+        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y - MARBLERADIUS, false));
+        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y - MARBLERADIUS, false));
+        this.marbles.push(new MarblePosition(base.player, position.x - MARBLERADIUS, position.y + MARBLERADIUS, false));
+        this.marbles.push(new MarblePosition(base.player, position.x + MARBLERADIUS, position.y + MARBLERADIUS, false));
       }
     }));
-    this._board.homes.forEach(homes => homes.filter(home => home.occupier).forEach(home => this.homes.filter(position => position.player === home.player && position.id === home.number).forEach(position => this.marbles.push(new MarblePosition(home.player, position.x, position.y)))));
+    this._board.homes.forEach(homes => homes.filter(home => home.occupier).forEach(home => this.homes.filter(position => position.player === home.player && position.id === home.number).forEach(position => this.marbles.push(new MarblePosition(home.player, position.x, position.y, home.occupier.transparent)))));
   }
 
   private init() {
@@ -151,6 +163,11 @@ export class ImagemapComponent {
   private drawMarble(position: MarblePosition): void {
     const context = this.canvas.nativeElement.getContext('2d');
     const img = document.getElementById('marble' + position.player);
+    if (position.transparent) {
+      context.globalAlpha = 0.85;
+    } else {
+      context.globalAlpha = 1;
+    }
     context.drawImage(img, position.x - position.radius, position.y - position.radius, position.radius * 2, position.radius * 2);
   }
 
@@ -178,7 +195,9 @@ export class ImagemapComponent {
     for (const hightlight of this.highlights) {
       this.drawClickMarker(hightlight);
     }
-    this.marbles.forEach(marble => this.drawMarble(marble));
+    this._specialMarbles.forEach(marble => this.drawMarble(marble));
+    this.marbles.filter(marble => this._specialMarbles.every(smarble => !(marble.x === smarble.x && marble.y === smarble.y)))
+      .forEach(marble => this.drawMarble(marble));
   }
 
   onClick(event: MouseEvent): void {

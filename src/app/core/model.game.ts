@@ -1,4 +1,5 @@
 import {Card} from './model.card';
+import {Action} from './model.action';
 
 export class Player {
   name: string;
@@ -31,6 +32,7 @@ export class Position {
 export class Marble {
   owner: number;
   moved: boolean;
+  transparent: boolean;
 
   constructor(owner: number, moved: boolean) {
     this.owner = owner;
@@ -100,8 +102,9 @@ export class Game {
   turn: number;
   devilPlayed: boolean;
   devilCard: Card;
+  lastAction: Action;
 
-  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card, turn: number, devilPlayed: boolean, devilCard: Card) {
+  constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card, turn: number, devilPlayed: boolean, devilCard: Card, lastAction: Action) {
     this.board = board;
     this.players = players;
     this.cards = cards;
@@ -109,6 +112,7 @@ export class Game {
     this.turn = turn;
     this.devilPlayed = devilPlayed;
     this.devilCard = devilCard;
+    this.lastAction = lastAction;
   }
 }
 
