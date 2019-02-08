@@ -22,8 +22,9 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/css/bootstrap.min.css",
-              "src/css/bootstrap-theme.min.css"
+              //"src/css/bootstrap.min.css",
+              //"src/css/bootstrap-theme.min.css",
+              "node_modules/@nebular/theme/styles/prebuilt/default.css"
             ],
             "scripts": [
               "src/js/jquery.min.js",

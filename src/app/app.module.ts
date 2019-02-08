@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
+import { NbThemeModule } from '@nebular/theme';
 
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
@@ -22,7 +24,31 @@ import {SharedModule} from './shared/shared.module';
     RoutingModule,
     GameModule,
     LobbyModule,
-    SharedModule
+    SharedModule,
+    NbAuthModule.forRoot({
+      strategies: [
+        NbPasswordAuthStrategy.setup({
+          name: 'email',
+        })
+      ],
+      forms: {
+        register: {
+          strategy: 'email',
+          terms: false,
+        },
+        login: {
+          rememberMe: false
+        },
+        validation: {
+          password: {
+            required: true,
+            minLength: 8,
+            maxLength: 100,
+          },
+        }
+      }
+    }),
+    NbThemeModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
