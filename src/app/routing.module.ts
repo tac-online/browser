@@ -23,7 +23,7 @@ const routes: Routes = [
     component: GameComponent
   },
   {
-    path: 'auth',
+    path: 'account',
     component: NbAuthComponent,
     children: [
       {

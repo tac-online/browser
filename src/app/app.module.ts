@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
+import {NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken} from '@nebular/auth';
 import { NbThemeModule } from '@nebular/theme';
 
 import { AppComponent } from './app.component';
@@ -29,6 +29,21 @@ import {SharedModule} from './shared/shared.module';
       strategies: [
         NbPasswordAuthStrategy.setup({
           name: 'email',
+          baseEndpoint: 'http://johannes-wirth.de:32775/auth/',
+          login: {
+            redirect: {
+              success: '/account/change-password',
+            }
+          },
+          resetPass: {
+            endpoint: 'change-pass',
+            method: 'post'
+          },
+          token: {
+            class: NbAuthJWTToken,
+
+            key: 'value', // this parameter tells where to look for the token
+          }
         })
       ],
       forms: {
