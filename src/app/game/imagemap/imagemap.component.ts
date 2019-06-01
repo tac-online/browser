@@ -28,19 +28,19 @@ export class ImagemapComponent {
   /**
    * Canvas element.
    */
-  @ViewChild('canvas')
+  @ViewChild('canvas', { static: true })
   private canvas: ElementRef;
 
   /**
    * Container element.
    */
-  @ViewChild('container')
+  @ViewChild('container', { static: true })
   private container: ElementRef;
 
   /**
    * Image element.
    */
-  @ViewChild('image')
+  @ViewChild('image', { static: true })
   private image: ElementRef;
 
   @Input() public currentCard: Card;

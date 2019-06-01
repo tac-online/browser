@@ -17,7 +17,7 @@ import {Coordinates} from '../../core/model.positions';
 })
 export class GameComponent implements OnInit {
 
-  @ViewChild('board')
+  @ViewChild('board', { static: false })
   private board: ImagemapComponent;
 
   set game(game: Game) {

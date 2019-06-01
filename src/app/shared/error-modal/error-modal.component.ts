@@ -12,7 +12,7 @@ import { ModalService } from '../../core/modal.service';
 })
 export class ErrorModalComponent implements OnInit, OnDestroy {
 
-  @ViewChild(ModalDirective) public connErrorModal: ModalDirective;
+  @ViewChild(ModalDirective, { static: true }) public connErrorModal: ModalDirective;
 
   private subscription: Subscription;
 
