@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   }
 
   private loadInterfaceVersion() {
-    this.restService.getInterfaceVersion(version => this.acceptInterfaceVersion(version), () => this.loadInterfaceVersion());
+    // this.restService.getInterfaceVersion(version => this.acceptInterfaceVersion(version), () => this.loadInterfaceVersion());
   }
 
   private acceptInterfaceVersion(version: Version) {

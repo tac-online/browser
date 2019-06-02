@@ -11,7 +11,7 @@ export class RestHelperService {
   private baseUrl: string;
 
   constructor(private http: HttpClient, private modalService: ModalService) {
-    this.baseUrl = 'http://assault2142.eu:8080/tac-server/webapi/';
+    this.baseUrl = 'http://tac-auth.johannes-wirth.de/tac-server/webapi/';
   }
 
   public getHeaders(): HttpHeaders {
