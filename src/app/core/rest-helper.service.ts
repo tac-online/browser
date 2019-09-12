@@ -4,18 +4,24 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CustomError, Status, Version} from './model';
 import {ModalService} from './modal.service';
+import {NbAuthService} from '@nebular/auth';
+import {TokenService} from './token.service';
 
 @Injectable()
 export class RestHelperService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private modalService: ModalService) {
-    this.baseUrl = 'http://tac-auth.johannes-wirth.de/tac-server/webapi/';
+  constructor(private http: HttpClient, private modalService: ModalService, private tokenService: TokenService) {
+    this.baseUrl = 'johannes-wirth.de/';
   }
 
   public getHeaders(): HttpHeaders {
-    return new HttpHeaders();
+    if (this.tokenService.loggedIn()) {
+      return new HttpHeaders().set('Authorization', this.tokenService.getToken().getValue());
+    } else {
+      return new HttpHeaders();
+    }
   }
 
   public get<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
@@ -45,6 +51,10 @@ export class RestHelperService {
 
   public getGameURL(): string {
     return this.baseUrl + 'game/';
+  }
+
+  public getGameServiceURL(): string {
+    return "https://tac-game-service." + this.baseUrl + "games/";
   }
 
   private handleStatus<T>(status: Status<T>, success: (resp: T) => void, reload: () => void) {

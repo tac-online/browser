@@ -4,6 +4,7 @@ import {RestHelperService} from './rest-helper.service';
 import {RestGameService} from './rest-game.service';
 import {WebsocketService} from './websocket.service';
 import {ModalService} from './modal.service';
+import {TokenService} from './token.service';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import {ModalService} from './modal.service';
     RestHelperService,
     RestGameService,
     WebsocketService,
-    ModalService
+    ModalService,
+    TokenService
   ]
 })
 export class CoreModule { }

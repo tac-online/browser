@@ -1,20 +1,30 @@
-<form>
-  <div class="row">
-    <div class="col-md-30">
-      <input type="text" class="form-control" name="game" [(ngModel)]="game">
-    </div>
-    <div class="col-md-15 col-md-offset-5">
-      <button class="btn btn-default" type="button" (click)="createGame()">
-        Create Game
-      </button>
-    </div>
-    <div class="col-md-15">
-      <button class="btn btn-default" type="button" (click)="joinGame()">
-        Join Game
-      </button>
-    </div>
-  </div>
-</form>
 
 
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+      </nb-card-header>
+      <nb-card-body>
+        <form>
+          <div class="row">
+            <div class="col-md-30">
+              <input type="text" class="form-control" name="game" [(ngModel)]="game">
+            </div>
+            <div class="col-md-15 col-md-offset-5">
+              <button nbButton class="btn btn-default" type="button" (click)="createGame()">
+                Create Game
+              </button>
+            </div>
+            <div class="col-md-15">
+              <button nbButton class="btn btn-default" type="button" (click)="joinGame()">
+                Join Game
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>
 

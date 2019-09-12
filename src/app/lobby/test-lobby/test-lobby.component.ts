@@ -14,11 +14,13 @@ export class TestLobbyComponent implements OnInit {
   constructor(private restGameService: RestGameService, private router: Router) { }
 
   ngOnInit() {
+    this.restGameService.getGames(list => console.log(list), () => this.ngOnInit());
   }
 
   createGame() {
-    if (this.game.length > 0)
-    this.restGameService.startGame(this.game, () => this.joinGame(), () => this.createGame());
+    //if (this.game.length > 0)
+    //this.restGameService.startGame(this.game, () => this.joinGame(), () => this.createGame());
+    this.restGameService.createGame(id => console.log(id), () => this.createGame());
   }
 
   joinGame() {

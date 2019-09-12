@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken} from '@nebular/auth';
-import { NbThemeModule } from '@nebular/theme';
+import {NbLayoutModule, NbThemeModule} from '@nebular/theme';
 
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
@@ -11,6 +11,7 @@ import {RoutingModule} from './routing.module';
 import {GameModule} from './game/game.module';
 import {LobbyModule} from './lobby/lobby.module';
 import {SharedModule} from './shared/shared.module';
+import {NbEvaIconsModule} from '@nebular/eva-icons';
 
 @NgModule({
   declarations: [
@@ -29,11 +30,17 @@ import {SharedModule} from './shared/shared.module';
       strategies: [
         NbPasswordAuthStrategy.setup({
           name: 'email',
-          baseEndpoint: 'http://johannes-wirth.de:32775/auth/',
+          baseEndpoint: 'https://tac-auth.johannes-wirth.de/',
           login: {
             redirect: {
-              success: '/account/change-password',
-            }
+              success: '/',
+            },
+            defaultErrors: ['Username/Password combination is not correct, please try again.'],
+          },
+          register: {
+            redirect: {
+              success: '/auth',
+            },
           },
           resetPass: {
             endpoint: 'change-pass',
@@ -48,11 +55,10 @@ import {SharedModule} from './shared/shared.module';
       ],
       forms: {
         register: {
-          strategy: 'email',
-          terms: false,
+          redirectDelay: 1000
         },
         login: {
-          rememberMe: false
+          redirectDelay: 1000
         },
         validation: {
           password: {
@@ -63,7 +69,8 @@ import {SharedModule} from './shared/shared.module';
         }
       }
     }),
-    NbThemeModule.forRoot()
+    NbThemeModule.forRoot(),
+    NbEvaIconsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

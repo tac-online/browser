@@ -10,6 +10,14 @@ export class RestGameService {
 
   constructor(private rest: RestHelperService) { }
 
+  public getGames(success: (resp: [number]) => void, reload: () => void) {
+    this.rest.get<[number]>(this.rest.getGameServiceURL(), success, reload);
+  }
+
+  public createGame(success: (resp: number) => void, reload: () => void) {
+    this.rest.post<number,undefined>(this.rest.getGameServiceURL(), null, success, reload);
+  }
+
   public getGame(game: string, success: (resp: Game) => void, reload: () => void) {
     this.rest.get<Game>(this.rest.getGameURL() + game, success, reload);
   }
