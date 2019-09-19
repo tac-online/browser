@@ -24,6 +24,7 @@
               "src/styles.css",
               //"src/css/bootstrap.min.css",
               //"src/css/bootstrap-theme.min.css",
+              "src/css/bootstrap-grid.min.css",
               "node_modules/@nebular/theme/styles/prebuilt/default.css"
             ],
             "scripts": [

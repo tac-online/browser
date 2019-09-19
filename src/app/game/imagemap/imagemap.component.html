@@ -1,7 +1,7 @@
-<img hidden id="marble0" [src]="'assets/black1.png'" (load)="draw(false)">
-<img hidden id="marble1" [src]="'assets/blue1.png'" (load)="draw(false)">
-<img hidden id="marble2" [src]="'assets/green1.png'" (load)="draw(false)">
-<img hidden id="marble3" [src]="'assets/red1.png'" (load)="draw(false)">
+<img hidden id="marble0" [src]="'assets/marbles/black.png'" (load)="draw(false)">
+<img hidden id="marble1" [src]="'assets/marbles/blue.png'" (load)="draw(false)">
+<img hidden id="marble2" [src]="'assets/marbles/green.png'" (load)="draw(false)">
+<img hidden id="marble3" [src]="'assets/marbles/red.png'" (load)="draw(false)">
 
 <div class="img-map" #container (window:resize)="draw(true)">
   <img #image [src]="'assets/board.jpg'" (load)="draw(true)">

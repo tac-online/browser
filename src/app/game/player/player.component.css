@@ -1,0 +1,29 @@
+.player0 {
+  position: absolute;
+  bottom: 0;
+}
+
+.player1 {
+  position: absolute;
+  bottom: 0;
+}
+
+.player0 h3 {
+  color: black;
+  font-weight: bold;
+}
+
+.player1 h3 {
+  color: blue;
+  font-weight: bold;
+}
+
+.player2 h3 {
+  color: lime;
+  font-weight: bold;
+}
+
+.player3 h3 {
+  color: red;
+  font-weight: bold;
+}

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken} from '@nebular/auth';
-import {NbLayoutModule, NbThemeModule} from '@nebular/theme';
+import {NbBadgeModule, NbDialogModule, NbLayoutModule, NbSidebarModule, NbThemeModule} from '@nebular/theme';
 
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
@@ -70,6 +70,8 @@ import {NbEvaIconsModule} from '@nebular/eva-icons';
       }
     }),
     NbThemeModule.forRoot(),
+    NbSidebarModule.forRoot(),
+    NbDialogModule.forRoot({}),
     NbEvaIconsModule
   ],
   providers: [],

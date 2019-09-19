@@ -1,0 +1,8 @@
+<div [ngClass]="'player' + playernumber">
+  <h3>Spieler {{playernumber + 1}}
+    <nb-badge *ngIf="turn" text="Am Zug" status="primary" position="top start"></nb-badge>
+  </h3>
+  <div class="row">
+    <tac-card *ngFor="let card of cards" [card]="card" (playCard)="playCard.emit($event)" class="col-md-2"></tac-card>
+  </div>
+</div>

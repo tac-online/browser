@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {NbAuthService, NbAuthToken} from '@nebular/auth';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TokenService {
 
   constructor(private authService: NbAuthService) {

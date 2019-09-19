@@ -3,12 +3,13 @@ import {Field, FieldID, Game, Position} from '../../core/model.game';
 import {Action, MoveAction, OpenAction, RegularOpenAction, TricksterAction} from '../../core/model.action';
 import {RestGameService} from '../../core/rest-game.service';
 import {WebsocketService} from '../../core/websocket.service';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Card} from '../../core/model.card';
 import {ActionService} from '../action.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ImagemapComponent} from '../imagemap/imagemap.component';
 import {Coordinates} from '../../core/model.positions';
+import {ClientMessage} from '../../core/model';
 
 @Component({
   selector: 'tac-game',
@@ -20,6 +21,7 @@ export class GameComponent implements OnInit {
   @ViewChild('board', { static: false })
   private board: ImagemapComponent;
 
+  private version: number;
   set game(game: Game) {
     this._game = game;
     if (game && game.currentCard) {
@@ -31,7 +33,7 @@ export class GameComponent implements OnInit {
   }
 
   private _game: Game;
-  private socket: Subject<any>;
+  private socket: Observable<ClientMessage>;
   public pickFieldResolve: (Field) => void;
   public pressButtonResolve: () => void;
   public buttonText: string;
@@ -51,12 +53,20 @@ export class GameComponent implements OnInit {
   private loadData(params: Params) {
     this.gameName = params['game'];
     this.loadGame(this.gameName);
-    this.socket = this.websocketService.createWebsocket();
-    this.socket.subscribe(() => this.loadGame(this.gameName));
+    this.socket = this.websocketService.subscribe('tac-game-server', 'game/');
+    this.socket.subscribe(resp => {
+      if (this.version < resp.version) {
+        console.log('reloading');
+        this.loadGame(resp.payload);
+      }
+    });
   }
 
   private loadGame(game: string) {
-    this.restService.getGame(game, (resp) => this.game = resp, () => this.loadGame(game));
+    this.restService.getGame(game, (game,version) => {
+      this.game = game;
+      this.version = version;
+    }, () => this.loadGame(game));
   }
 
   public doAction() {
@@ -80,11 +90,17 @@ export class GameComponent implements OnInit {
       this.board.highlights = [];
       this.board.draw(false);
     }
-    this.restService.doAction(this.gameName, action, (resp) => this.game = resp, () => this.doAction());
+    this.restService.doAction(this.gameName, action, (game,version) => {
+      this.game = game;
+      this.version = version;
+    }, () => this.doAction());
   }
 
   public playCard(card: Card) {
-    this.restService.playCard(this.gameName, card, () => null, () => this.loadGame(this.gameName));
+    this.restService.playCard(this.gameName, card, (game,version) => {
+      this.game = game;
+      this.version = version;
+    }, () => this.loadGame(this.gameName));
   }
 
   public pickField(): Promise<Field> {

@@ -9,23 +9,24 @@ import {Router} from '@angular/router';
 })
 export class TestLobbyComponent implements OnInit {
 
-  public game = '';
+  games: number[] = [];
 
   constructor(private restGameService: RestGameService, private router: Router) { }
 
   ngOnInit() {
-    this.restGameService.getGames(list => console.log(list), () => this.ngOnInit());
+    this.restGameService.getGames(list => this.games = list, () => this.ngOnInit());
   }
 
   createGame() {
-    //if (this.game.length > 0)
-    //this.restGameService.startGame(this.game, () => this.joinGame(), () => this.createGame());
-    this.restGameService.createGame(id => console.log(id), () => this.createGame());
+    this.restGameService.createGame(id => this.games.push(id), () => this.createGame());
   }
 
-  joinGame() {
-    if (this.game.length > 0)
-    this.router.navigate(['/game', {game: this.game}]);
+  joinGame(gameid: number) {
+    this.router.navigate(['/game', {game: gameid}]);
+  }
+
+  deleteGame(gameid: number) {
+    this.restGameService.deleteGame(gameid,() => this.games = this.games.filter(id => id !== gameid), () => this.deleteGame(gameid));
   }
 
 }

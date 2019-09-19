@@ -1,30 +1,16 @@
-
-
-<nb-layout>
-  <nb-layout-column>
-    <nb-card>
-      <nb-card-header>
-      </nb-card-header>
-      <nb-card-body>
-        <form>
-          <div class="row">
-            <div class="col-md-30">
-              <input type="text" class="form-control" name="game" [(ngModel)]="game">
-            </div>
-            <div class="col-md-15 col-md-offset-5">
-              <button nbButton class="btn btn-default" type="button" (click)="createGame()">
-                Create Game
-              </button>
-            </div>
-            <div class="col-md-15">
-              <button nbButton class="btn btn-default" type="button" (click)="joinGame()">
-                Join Game
-              </button>
-            </div>
-          </div>
-        </form>
-      </nb-card-body>
-    </nb-card>
-  </nb-layout-column>
-</nb-layout>
+<nb-card>
+  <nb-card-header>
+    Games
+    <button nbButton (click)="createGame()">Create Game</button>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let game of games">
+        Game {{ game }}
+        <button nbButton (click)="joinGame(game)">Join</button>
+        <button nbButton (click)="deleteGame(game)">Delete</button>
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>
 

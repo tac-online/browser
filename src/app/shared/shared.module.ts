@@ -4,7 +4,8 @@ import {FormsModule} from '@angular/forms';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import {ModalModule} from 'ngx-bootstrap';
 import { MatchValueDirective } from './match-value.directive';
-import {NbButtonModule, NbCardModule, NbIconModule, NbLayoutModule} from '@nebular/theme';
+import {NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbLayoutModule} from '@nebular/theme';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @NgModule({
   imports: [
@@ -14,9 +15,10 @@ import {NbButtonModule, NbCardModule, NbIconModule, NbLayoutModule} from '@nebul
     NbLayoutModule,
     NbCardModule,
     NbIconModule,
-    NbButtonModule
+    NbButtonModule,
+    NbDialogModule.forChild()
   ],
-  declarations: [ErrorModalComponent, MatchValueDirective],
+  declarations: [ErrorModalComponent, MatchValueDirective, ErrorDialogComponent],
   exports : [
     CommonModule,
     FormsModule,
@@ -26,7 +28,11 @@ import {NbButtonModule, NbCardModule, NbIconModule, NbLayoutModule} from '@nebul
     NbLayoutModule,
     NbCardModule,
     NbIconModule,
-    NbButtonModule
+    NbButtonModule,
+    ErrorDialogComponent
+  ],
+  entryComponents: [
+    ErrorDialogComponent
   ]
 })
 export class SharedModule { }

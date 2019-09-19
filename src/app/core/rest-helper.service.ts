@@ -4,16 +4,17 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CustomError, Status, Version} from './model';
 import {ModalService} from './modal.service';
-import {NbAuthService} from '@nebular/auth';
 import {TokenService} from './token.service';
+import {NbDialogService} from '@nebular/theme';
+import {ErrorDialogComponent} from '../shared/error-dialog/error-dialog.component';
 
 @Injectable()
 export class RestHelperService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private modalService: ModalService, private tokenService: TokenService) {
-    this.baseUrl = 'johannes-wirth.de/';
+  constructor(private http: HttpClient, private modalService: ModalService, private tokenService: TokenService, private dialogService: NbDialogService) {
+    this.baseUrl = 'tac.johannes-wirth.de/';
   }
 
   public getHeaders(): HttpHeaders {
@@ -24,22 +25,22 @@ export class RestHelperService {
     }
   }
 
-  public get<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public get<T>(url: string, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const response = this.http.get<Status<T>>(url, {headers: headers}).pipe(timeout(5000));
     response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public put<T, U>(url: string, data: U, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public put<T, U>(url: string, data: U, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const value = this.http.put<Status<T>>(url, data, {headers: headers}).pipe(timeout(5000));
     value.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public post<T, U>(url: string, data: U, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public post<T, U>(url: string, data: U, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const value = this.http.post<Status<T>>(url, data, {headers: headers}).pipe(timeout(5000));
     value.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public delete<T>(url: string, success: (resp: T) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public delete<T>(url: string, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const response = this.http.delete<Status<T>>(url, {headers: headers}).pipe(timeout(5000));
     response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
@@ -50,19 +51,20 @@ export class RestHelperService {
   }
 
   public getGameURL(): string {
-    return this.baseUrl + 'game/';
+    return "https://game-server." + this.baseUrl + 'game/';
   }
 
   public getGameServiceURL(): string {
-    return "https://tac-game-service." + this.baseUrl + "games/";
+    return "https://game-server." + this.baseUrl + "games/";
   }
 
-  private handleStatus<T>(status: Status<T>, success: (resp: T) => void, reload: () => void) {
+  private handleStatus<T>(status: Status<T>, success: (resp: T,version: number) => void, reload: () => void) {
     if (status.error) {
-      this.modalService.show(new CustomError(status.message, reload, status.message !== 'MOVE_NOT_ALLOWED'));
+      let error = new CustomError(status.message, reload, status.message !== 'MOVE_NOT_ALLOWED');
+      this.dialogService.open(ErrorDialogComponent, {context: {error: error}});
       if (status.message === 'MOVE_NOT_ALLOWED') reload();
     } else {
-      success(status.value);
+      success(status.value, status.version);
     }
   }
 
@@ -82,6 +84,6 @@ export class RestHelperService {
     } else {
       error2 = new CustomError(error.message, reload, false);
     }
-    this.modalService.show(error2);
+    this.dialogService.open(ErrorDialogComponent, {context: {error: error2}});
   }
 }
