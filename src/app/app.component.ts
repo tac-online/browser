@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {RestHelperService} from './core/rest-helper.service';
 import {Version} from './core/model';
+import {NbMenuItem, NbMenuService} from '@nebular/theme';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +10,9 @@ import {Version} from './core/model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private restService: RestHelperService) { }
+  constructor(private restService: RestHelperService, private menuService: NbMenuService) { }
 
+  public items = [{ title: 'Profile' }, { title: 'Log out' , url: 'auth/logout' }];
 
   public ngOnInit() {
     this.loadInterfaceVersion();

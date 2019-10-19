@@ -1,8 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import {NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken} from '@nebular/auth';
-import {NbBadgeModule, NbDialogModule, NbLayoutModule, NbSidebarModule, NbThemeModule} from '@nebular/theme';
+import {NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken, NbTokenStorage} from '@nebular/auth';
+import {
+  NbActionsModule,
+  NbBadgeModule,
+  NbContextMenuModule,
+  NbDialogModule,
+  NbLayoutModule, NbMenuModule,
+  NbSidebarModule,
+  NbThemeModule, NbUserModule
+} from '@nebular/theme';
 
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
@@ -12,6 +20,9 @@ import {GameModule} from './game/game.module';
 import {LobbyModule} from './lobby/lobby.module';
 import {SharedModule} from './shared/shared.module';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
+import {AuthGuard} from './auth.guard';
+import {TokenCookieStorageService} from './token-cookie-storage.service';
+import {CookieModule} from 'ngx-cookie';
 
 @NgModule({
   declarations: [
@@ -21,6 +32,7 @@ import {NbEvaIconsModule} from '@nebular/eva-icons';
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
+    CookieModule.forRoot(),
     HttpClientModule,
     RoutingModule,
     GameModule,
@@ -30,7 +42,7 @@ import {NbEvaIconsModule} from '@nebular/eva-icons';
       strategies: [
         NbPasswordAuthStrategy.setup({
           name: 'email',
-          baseEndpoint: 'https://tac-auth.johannes-wirth.de/',
+          baseEndpoint: 'https://auth-service.tac.johannes-wirth.de/',
           login: {
             redirect: {
               success: '/',
@@ -72,9 +84,13 @@ import {NbEvaIconsModule} from '@nebular/eva-icons';
     NbThemeModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbDialogModule.forRoot({}),
-    NbEvaIconsModule
+    NbEvaIconsModule,
+    NbContextMenuModule,
+    NbMenuModule.forRoot(),
+    NbUserModule,
+    NbActionsModule
   ],
-  providers: [],
+  providers: [AuthGuard, TokenCookieStorageService, { provide: NbTokenStorage, useClass: TokenCookieStorageService }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

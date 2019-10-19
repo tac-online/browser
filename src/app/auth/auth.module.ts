@@ -14,6 +14,7 @@ import {
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {SharedModule} from '../shared/shared.module';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {SharedModule} from '../shared/shared.module';
   ],
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LogoutComponent
   ],
 })
 export class AuthModule {

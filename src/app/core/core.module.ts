@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {RestHelperService} from './rest-helper.service';
 import {RestGameService} from './rest-game.service';
 import {WebsocketService} from './websocket.service';
-import {ModalService} from './modal.service';
 import {TokenService} from './token.service';
 
 @NgModule({
@@ -14,7 +13,6 @@ import {TokenService} from './token.service';
     RestHelperService,
     RestGameService,
     WebsocketService,
-    ModalService,
     TokenService
   ]
 })

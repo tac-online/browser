@@ -3,7 +3,6 @@ import {timeout} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CustomError, Status, Version} from './model';
-import {ModalService} from './modal.service';
 import {TokenService} from './token.service';
 import {NbDialogService} from '@nebular/theme';
 import {ErrorDialogComponent} from '../shared/error-dialog/error-dialog.component';
@@ -13,7 +12,7 @@ export class RestHelperService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private modalService: ModalService, private tokenService: TokenService, private dialogService: NbDialogService) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private dialogService: NbDialogService) {
     this.baseUrl = 'tac.johannes-wirth.de/';
   }
 
@@ -25,22 +24,22 @@ export class RestHelperService {
     }
   }
 
-  public get<T>(url: string, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public get<T>(url: string, success: (resp: T, version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const response = this.http.get<Status<T>>(url, {headers: headers}).pipe(timeout(5000));
     response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public put<T, U>(url: string, data: U, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public put<T, U>(url: string, data: U, success: (resp: T, version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const value = this.http.put<Status<T>>(url, data, {headers: headers}).pipe(timeout(5000));
     value.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public post<T, U>(url: string, data: U, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public post<T, U>(url: string, data: U, success: (resp: T, version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const value = this.http.post<Status<T>>(url, data, {headers: headers}).pipe(timeout(5000));
     value.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public delete<T>(url: string, success: (resp: T,version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
+  public delete<T>(url: string, success: (resp: T, version: number) => void, reload: () => void, headers: HttpHeaders = this.getHeaders()) {
     const response = this.http.delete<Status<T>>(url, {headers: headers}).pipe(timeout(5000));
     response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
@@ -51,18 +50,18 @@ export class RestHelperService {
   }
 
   public getGameURL(): string {
-    return "https://game-server." + this.baseUrl + 'game/';
+    return 'https://game-server.' + this.baseUrl + 'game/';
   }
 
   public getGameServiceURL(): string {
-    return "https://game-server." + this.baseUrl + "games/";
+    return 'https://game-server.' + this.baseUrl + 'games/';
   }
 
-  private handleStatus<T>(status: Status<T>, success: (resp: T,version: number) => void, reload: () => void) {
+  private handleStatus<T>(status: Status<T>, success: (resp: T, version: number) => void, reload: () => void) {
     if (status.error) {
-      let error = new CustomError(status.message, reload, status.message !== 'MOVE_NOT_ALLOWED');
+      const error = new CustomError(status.message, reload, status.message !== 'MOVE_NOT_ALLOWED');
       this.dialogService.open(ErrorDialogComponent, {context: {error: error}});
-      if (status.message === 'MOVE_NOT_ALLOWED') reload();
+      if (status.message === 'MOVE_NOT_ALLOWED') { reload(); }
     } else {
       success(status.value, status.version);
     }
