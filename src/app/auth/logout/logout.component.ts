@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NbTokenService} from '@nebular/auth';
+import {TokenService} from '../../core/token.service';
 
 @Component({
   selector: 'app-logout',
@@ -8,7 +8,7 @@ import {NbTokenService} from '@nebular/auth';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private tokenService: NbTokenService) { }
+  constructor(private tokenService: TokenService) { }
 
   ngOnInit() {
     this.tokenService.clear();

@@ -22,14 +22,12 @@
             ],
             "styles": [
               "src/styles.css",
-              //"src/css/bootstrap.min.css",
-              //"src/css/bootstrap-theme.min.css",
-              "src/css/bootstrap-grid.min.css",
-              "node_modules/@nebular/theme/styles/prebuilt/default.css"
+              "node_modules/@clr/icons/clr-icons.min.css",
+              "node_modules/@clr/ui/clr-ui.min.css"
             ],
             "scripts": [
-              "src/js/jquery.min.js",
-              "src/js/bootstrap.min.js"
+              "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
+              "node_modules/@clr/icons/clr-icons.min.js"
             ]
           },
           "configurations": {

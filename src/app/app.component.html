@@ -1,17 +1,22 @@
-<nb-layout>
-  <nb-layout-header fixed>
-    <div class="header-container">
-      <div class="logo-container">
-        <a class="logo" href="#">TAC</a>
-      </div>
-      <nb-actions size="medium">
-        <nb-action icon="person" [nbContextMenu]="items"></nb-action>
-      </nb-actions>
+<router-outlet></router-outlet><div class="main-container">
+  <header class="header header-6">
+    <div class="branding">
+      <span class="title">TAC</span>
     </div>
-  </nb-layout-header>
-  <nb-layout-column>
-    <div class="container-fluid">
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-icon" clrDropdownTrigger aria-label="toggle settings menu">
+          <clr-icon shape="cog"></clr-icon>
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </header>
+  <div class="content-container">
+    <div class="content-area">
       <router-outlet></router-outlet>
     </div>
-  </nb-layout-column>
-</nb-layout>
+  </div>
+</div>

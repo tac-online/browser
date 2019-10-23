@@ -1,17 +1,38 @@
-import { Component, Input } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CustomError} from '../../core/model';
+import {Subscription} from 'rxjs';
+import {ModalService} from '../../core/modal.service';
 
 @Component({
   selector: 'tac-error-dialog',
   templateUrl: 'error-dialog.component.html',
   styleUrls: ['error-dialog.component.css'],
 })
-export class ErrorDialogComponent {
+export class ErrorDialogComponent implements OnInit, OnDestroy {
 
-  @Input() error: CustomError;
+  public open: boolean;
 
-  constructor(protected ref: NbDialogRef<ErrorDialogComponent>) {}
+  private subscription: Subscription;
+
+  public error: CustomError;
+
+  constructor(private modalService: ModalService) {
+  }
+
+  public ngOnInit() {
+    this.subscription = this.modalService.error.subscribe(item => this.show(item));
+  }
+
+  public ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  private show(error: CustomError) {
+    this.error = error;
+    if (error) {
+      this.open = true;
+    }
+  }
 
   reload() {
     this.dismiss();
@@ -19,6 +40,6 @@ export class ErrorDialogComponent {
   }
 
   dismiss() {
-    this.ref.close();
+    this.open = false;
   }
 }

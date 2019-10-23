@@ -14,12 +14,12 @@ export class WebsocketService {
 
   private initWebsocket() {
     const socket = new WebSocket('wss://messaging-service.tac.johannes-wirth.de/websocket');
-    socket.onopen = () => socket.send(this.tokenService.getToken().getValue());
+    socket.onopen = () => socket.send(this.tokenService.getToken());
     const observable = Observable.create(
-      (observer: Observer<MessageEvent>) => {
-        socket.onmessage = observer.next.bind(observer);
-        socket.onerror = observer.error.bind(observer);
-        socket.onclose = observer.complete.bind(observer);
+      (eventObserver: Observer<MessageEvent>) => {
+        socket.onmessage = eventObserver.next.bind(eventObserver);
+        socket.onerror = eventObserver.error.bind(eventObserver);
+        socket.onclose = eventObserver.complete.bind(eventObserver);
         return socket.close.bind(socket);
       }
     );
@@ -34,7 +34,7 @@ export class WebsocketService {
   }
 
   public subscribe(service: string, resource: string): Observable<ClientMessage> {
-    if (!this.initialized) this.initWebsocket();
+    if (!this.initialized) { this.initWebsocket(); }
     return this.messages.map(ev => JSON.parse(ev.data)).pipe(filter(ev => ev.service === service && ev.resource === resource));
   }
 

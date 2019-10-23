@@ -1,130 +1,28 @@
-<h1 id="title" class="title">Register</h1>
-
-<nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
-  <p class="alert-title"><b>Oh snap!</b></p>
-  <ul class="alert-message-list">
-    <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
-  </ul>
-</nb-alert>
-
-<nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
-  <p class="alert-title"><b>Hooray!</b></p>
-  <ul class="alert-message-list">
-    <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
-  </ul>
-</nb-alert>
-
-<form (ngSubmit)="register()" #form="ngForm" aria-labelledby="title">
-
-  <div class="form-control-group">
-    <label class="label" for="input-username">Username:</label>
-    <input nbInput
-           [(ngModel)]="user.username"
-           #username="ngModel"
-           id="input-username"
-           name="username"
-           placeholder="Username"
-           autofocus
-           fullWidth
-           fieldSize="large"
-           [status]="username.dirty ? (username.invalid  ? 'danger' : 'success') : ''"
-           required
-           [attr.aria-invalid]="username.invalid && username.touched ? true : null">
-    <ng-container *ngIf="username.invalid && username.touched">
-      <p class="caption status-danger" *ngIf="username.errors?.required">
-        Username is required!
-      </p>
-    </ng-container>
-  </div>
-
-  <div class="form-control-group">
-    <label class="label" for="input-email">Email address:</label>
-    <input nbInput
-           [(ngModel)]="user.email"
-           #email="ngModel"
-           id="input-email"
-           name="email"
-           pattern=".+@.+..+"
-           placeholder="Email address"
-           fullWidth
-           fieldSize="large"
-           [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
-           [attr.aria-invalid]="email.invalid && email.touched ? true : null">
-    <p class="caption status-info">
-      If you link your account with an Email address, you can request a new password in case of loss. Otherwise you will not be able to access your account anymore.
-    </p>
-    <ng-container *ngIf="email.invalid && email.touched">
-      <p class="caption status-danger" *ngIf="email.errors?.pattern">
-        Email should be the real one!
-      </p>
-    </ng-container>
-  </div>
-
-  <div class="form-control-group">
-    <label class="label" for="input-password">Password:</label>
-    <input nbInput
-           [(ngModel)]="user.password"
-           #password="ngModel"
-           type="password"
-           id="input-password"
-           name="password"
-           placeholder="Password"
-           fullWidth
-           fieldSize="large"
-           matchValue="rePass" reverse="true"
-           [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
-           [required]="getConfigValue('forms.validation.password.required')"
-           [minlength]="getConfigValue('forms.validation.password.minLength')"
-           [maxlength]="getConfigValue('forms.validation.password.maxLength')"
-           [attr.aria-invalid]="password.invalid && password.touched ? true : null">
-    <ng-container *ngIf="password.invalid && password.touched">
-      <p class="caption status-danger" *ngIf="password.errors?.required">
-        Password is required!
-      </p>
-      <p class="caption status-danger" *ngIf="password.errors?.minlength || password.errors?.maxlength">
-        Password should contains
-        from {{ getConfigValue('forms.validation.password.minLength') }}
-        to {{ getConfigValue('forms.validation.password.maxLength') }}
-        characters
-      </p>
-    </ng-container>
-  </div>
-
-  <div class="form-control-group">
-    <label class="label" for="input-re-password">Repeat password:</label>
-    <input nbInput
-           [(ngModel)]="repass"
-           #rePass="ngModel"
-           type="password"
-           id="input-re-password"
-           name="rePass"
-           placeholder="Confirm Password"
-           fullWidth
-           fieldSize="large"
-           [status]="rePass.dirty ? (rePass.invalid || password.value != rePass.value  ? 'danger' : 'success') : ''"
-           required
-           matchValue="password"
-           [attr.aria-invalid]="rePass.invalid && rePass.touched ? true : null">
-    <ng-container *ngIf="rePass.invalid && rePass.touched">
-      <p class="caption status-danger" *ngIf="rePass.errors?.required">
-        Password confirmation is required!
-      </p>
-      <p class="caption status-danger" *ngIf="rePass.errors?.matchValue">
-        Password does not match the confirm password.
-      </p>
-    </ng-container>
-  </div>
-
-  <button nbButton
-          fullWidth
-          status="primary"
-          size="large"
-          [disabled]="submitted || !form.valid"
-          [class.btn-pulse]="submitted">
-    Register
-  </button>
-</form>
-
-<section class="another-action" aria-label="Sign in">
-  Already have an account? <a class="text-link" routerLink="../login">Log in</a>
-</section>
+<div class="login-wrapper">
+  <form class="login" clrForm>
+    <section class="title">
+      <h3 class="welcome">Welcome to</h3>
+      Company Product Name
+      <h5 class="hint">Use your Company ID to sign in or create one now</h5>
+    </section>
+    <div class="login-group">
+      <clr-input-container>
+        <label class="clr-sr-only">Username</label>
+        <input type="text" name="username" clrInput placeholder="Username" [(ngModel)]="username"/>
+      </clr-input-container>
+      <clr-password-container>
+        <label class="clr-sr-only">Password</label>
+        <input type="password" name="password" clrPassword placeholder="Password" [(ngModel)]="password"/>
+      </clr-password-container>
+      <clr-checkbox-wrapper>
+        <label>Remember me</label>
+        <input type="checkbox" name="rememberMe" clrCheckbox [(ngModel)]="rememberMe"/>
+      </clr-checkbox-wrapper>
+      <div class="error active">
+        Invalid user name or password
+      </div>
+      <button type="submit" class="btn btn-primary">NEXT</button>
+      <a href="javascript://" class="signup">Sign up for a Company ID</a>
+    </div>
+  </form>
+</div>

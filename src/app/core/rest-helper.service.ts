@@ -1,24 +1,22 @@
-
 import {timeout} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {CustomError, Status, Version} from './model';
+import {CustomError, Status} from './model';
 import {TokenService} from './token.service';
-import {NbDialogService} from '@nebular/theme';
-import {ErrorDialogComponent} from '../shared/error-dialog/error-dialog.component';
+import {ModalService} from './modal.service';
 
 @Injectable()
 export class RestHelperService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private dialogService: NbDialogService) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private modalService: ModalService) {
     this.baseUrl = 'tac.johannes-wirth.de/';
   }
 
   public getHeaders(): HttpHeaders {
-    if (this.tokenService.loggedIn()) {
-      return new HttpHeaders().set('Authorization', this.tokenService.getToken().getValue());
+    if (this.tokenService.isAuthenticated()) {
+      return new HttpHeaders().set('Authorization', this.tokenService.getToken());
     } else {
       return new HttpHeaders();
     }
@@ -44,23 +42,18 @@ export class RestHelperService {
     response.subscribe(res => this.handleStatus(res, success, reload), error => this.handleError(error, reload));
   }
 
-  public getInterfaceVersion(success: (resp: Version) => void, reload: () => void) {
-    const url = this.baseUrl + 'version';
-    this.get(url, success, reload, new HttpHeaders());
-  }
-
-  public getGameURL(): string {
-    return 'https://game-server.' + this.baseUrl + 'game/';
-  }
-
   public getGameServiceURL(): string {
-    return 'https://game-server.' + this.baseUrl + 'games/';
+    return 'https://game-server.' + this.baseUrl;
+  }
+
+  public getAuthServiceURL(): string {
+    return 'https://auth-service.' + this.baseUrl;
   }
 
   private handleStatus<T>(status: Status<T>, success: (resp: T, version: number) => void, reload: () => void) {
     if (status.error) {
       const error = new CustomError(status.message, reload, status.message !== 'MOVE_NOT_ALLOWED');
-      this.dialogService.open(ErrorDialogComponent, {context: {error: error}});
+      this.modalService.showError(error);
       if (status.message === 'MOVE_NOT_ALLOWED') { reload(); }
     } else {
       success(status.value, status.version);
@@ -83,6 +76,6 @@ export class RestHelperService {
     } else {
       error2 = new CustomError(error.message, reload, false);
     }
-    this.dialogService.open(ErrorDialogComponent, {context: {error: error2}});
+    this.modalService.showError(error2);
   }
 }

@@ -26,7 +26,7 @@ export class TestLobbyComponent implements OnInit {
   }
 
   deleteGame(gameid: number) {
-    this.restGameService.deleteGame(gameid,() => this.games = this.games.filter(id => id !== gameid), () => this.deleteGame(gameid));
+    this.restGameService.deleteGame(gameid, () => this.games = this.games.filter(id => id !== gameid), () => this.deleteGame(gameid));
   }
 
 }

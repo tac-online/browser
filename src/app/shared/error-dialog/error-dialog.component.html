@@ -1,23 +1,21 @@
-<nb-card>
-  <nb-card-header>Error</nb-card-header>
-  <nb-card-body>
+<clr-modal [(clrModalOpen)]="open">
+  <h3 class="modal-title">Error</h3>
+  <div class="modal-body">
     <div [ngSwitch]="error.message">
       <span *ngSwitchCase="'TimeoutError'">Server nicht erreichbar. Bitte prüfen Sie ihre Internetverbindung.</span>
       <span *ngSwitchCase="'UNKNOWN_GAME'">Dieses Spiel existiert nicht.</span>
       <span *ngSwitchCase="'MOVE_NOT_ALLOWED'">Dieser Zug ist nicht erlaubt.</span>
       <span *ngSwitchDefault>Unbekannter Fehler: {{error.message}}</span>
     </div>
-  </nb-card-body>
-  <div *ngIf="error.critical; else notCritical">
-    <nb-card-footer>
-      <button nbButton (click)="reload()">Retry</button>
-      <button nbButton (click)="dismiss()">Back to Overview</button>
-    </nb-card-footer>
   </div>
-  <ng-template #notCritical>
-    <nb-card-footer>
-      <button nbButton status="primary" (click)="dismiss()">Dismiss</button>
-    </nb-card-footer>
-  </ng-template>
-</nb-card>
+  <div class="modal-footer">
+    <div *ngIf="error.critical; else notCritical">
+      <button type="button" class="btn btn-primary" (click)="reload()">Retry</button>
+      <button type="button" class="btn btn-outline" (click)="dismiss()">Back to Overview</button>
+    </div>
+    <ng-template #notCritical>
+      <button type="button" class="btn btn-primary" (click)="dismiss()">Dismiss</button>
+    </ng-template>
+  </div>
+</clr-modal>
 

@@ -1,16 +1,14 @@
-<nb-card>
-  <nb-card-header>
+<div class="card">
+  <div class="card-header">
     Games
-    <button nbButton (click)="createGame()">Create Game</button>
-  </nb-card-header>
-  <nb-card-body>
-    <nb-list>
-      <nb-list-item *ngFor="let game of games">
-        Game {{ game }}
-        <button nbButton (click)="joinGame(game)">Join</button>
-        <button nbButton (click)="deleteGame(game)">Delete</button>
-      </nb-list-item>
-    </nb-list>
-  </nb-card-body>
-</nb-card>
+    <button type="button" class="btn btn-primary" (click)="createGame()">Create Game</button>
+  </div>
+  <div class="card-block">
+    <div *ngFor="let game of games">
+      Game {{ game }}
+      <button type="button" class="btn btn-primary" (click)="joinGame(game)">Join</button>
+      <button type="button" class="btn btn-danger" (click)="deleteGame(game)">Delete</button>
+    </div>
+  </div>
+</div>
 

@@ -5,14 +5,11 @@ import { CardComponent } from './card/card.component';
 import {ActionService} from './action.service';
 import {SharedModule} from '../shared/shared.module';
 import { ImagemapComponent } from './imagemap/imagemap.component';
-import {NbBadgeModule, NbDialogModule} from '@nebular/theme';
 import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   imports: [
-    SharedModule,
-    NbDialogModule.forChild(),
-    NbBadgeModule
+    SharedModule
   ],
   declarations: [GameComponent, CardComponent, ImagemapComponent, PlayerComponent],
   providers: [
