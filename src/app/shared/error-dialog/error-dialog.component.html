@@ -9,13 +9,17 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div *ngIf="error.critical; else notCritical">
+    <div>
+      <button type="button" class="btn btn-primary" (click)="reload()">Retry</button>
+      <button type="button" class="btn btn-outline" (click)="dismiss()">Back to Overview</button>
+    </div>
+    <!--<div *ngIf="error.critical; else notCritical">
       <button type="button" class="btn btn-primary" (click)="reload()">Retry</button>
       <button type="button" class="btn btn-outline" (click)="dismiss()">Back to Overview</button>
     </div>
     <ng-template #notCritical>
       <button type="button" class="btn btn-primary" (click)="dismiss()">Dismiss</button>
-    </ng-template>
+    </ng-template>-->
   </div>
 </clr-modal>
 

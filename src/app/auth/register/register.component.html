@@ -2,27 +2,30 @@
   <form class="login" clrForm>
     <section class="title">
       <h3 class="welcome">Welcome to</h3>
-      Company Product Name
-      <h5 class="hint">Use your Company ID to sign in or create one now</h5>
+      TAC
+      <h5 class="hint">Create a new account</h5>
     </section>
     <div class="login-group">
       <clr-input-container>
         <label class="clr-sr-only">Username</label>
-        <input type="text" name="username" clrInput placeholder="Username" [(ngModel)]="username"/>
+        <input type="text" name="username" clrInput placeholder="Username" [(ngModel)]="user.username"/>
       </clr-input-container>
       <clr-password-container>
         <label class="clr-sr-only">Password</label>
-        <input type="password" name="password" clrPassword placeholder="Password" [(ngModel)]="password"/>
+        <input type="password" name="password" clrPassword placeholder="Password" [(ngModel)]="user.password" matchValue="repeatPassword" reverse="true"/>
       </clr-password-container>
-      <clr-checkbox-wrapper>
-        <label>Remember me</label>
-        <input type="checkbox" name="rememberMe" clrCheckbox [(ngModel)]="rememberMe"/>
-      </clr-checkbox-wrapper>
-      <div class="error active">
-        Invalid user name or password
+      <clr-password-container>
+        <label class="clr-sr-only">Repeat Password</label>
+        <input type="password" name="repeatPassword" #repeatPasswordInput="ngModel" clrPassword placeholder="Password" [(ngModel)]="repeatPassword" matchValue="password"/>
+      </clr-password-container>
+      <div *ngIf="authError" class="error active">
+        User name is already taken
       </div>
-      <button type="submit" class="btn btn-primary">NEXT</button>
-      <a href="javascript://" class="signup">Sign up for a Company ID</a>
+      <div *ngIf="repeatPasswordInput.touched && repeatPasswordInput.invalid" class="error active">
+        Passwords do not match
+      </div>
+      <button (click)="register()" type="submit" class="btn btn-primary" [disabled]="repeatPasswordInput.invalid || !allFilled()">Sign Up</button>
+      <a routerLink="/auth/login" class="signup">Sign in</a>
     </div>
   </form>
 </div>

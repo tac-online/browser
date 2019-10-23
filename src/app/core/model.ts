@@ -1,9 +1,9 @@
 export class Status<T> {
-  constructor(public error: boolean, public value: T, public message: string, public version: number) {}
+  constructor(public error: boolean, public value: T, public message: string, public version: number, public critical: boolean) {}
 }
 
 export class CustomError {
-  constructor(public message: string, public callback: () => void, public critical: boolean) {}
+  constructor(public message: string, public callback: () => void) {}
 }
 
 export class ClientMessage {
