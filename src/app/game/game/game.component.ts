@@ -18,7 +18,7 @@ import {ClientMessage} from '../../core/model';
 })
 export class GameComponent implements OnInit {
 
-  @ViewChild('board', { static: false })
+  @ViewChild('board')
   private board: ImagemapComponent;
 
   private version: number;
