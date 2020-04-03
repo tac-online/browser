@@ -12,8 +12,6 @@ export class PlayerComponent {
   @Input() turn: boolean;
   @Input() playernumber: number;
 
-  @Output() playCard = new EventEmitter<Card>();
-
   constructor() { }
 
 }

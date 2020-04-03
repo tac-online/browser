@@ -1,1 +1,1 @@
-<img (click)="playCard.emit(card)" [src]="'assets/cards/' + card + '.png'" />
+<img [tacDraggable]="getCardContainer()" [pred]="turnStateService.playCard" [src]="'assets/cards/' + card + '.png'">

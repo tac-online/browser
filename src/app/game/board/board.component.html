@@ -1,0 +1,13 @@
+
+<div class="container">
+  <img #image [src]="'assets/board-790.jpg'" (window:resize)="init()" (load)="init()">
+
+  <tac-field *ngFor="let position of track" [position]="position" [field]="board.track[position.id]"></tac-field>
+
+  <tac-field *ngFor="let position of homes" [position]="position" [field]="board.homes[position.player][position.id]"></tac-field>
+
+  <tac-base *ngFor="let position of bases" [position]="position" [base]="board.bases[position.player]"></tac-base>
+
+  <tac-cardstack [position]="cardstack"></tac-cardstack>
+
+</div>

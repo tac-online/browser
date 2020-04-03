@@ -1,18 +1,19 @@
 import {timeout} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {CustomError, Status} from './model';
+import {ModalError, Status} from './model';
 import {TokenService} from './token.service';
 import {ModalService} from './modal.service';
 import {Router} from '@angular/router';
+import {EnvironmentService} from './environment.service';
 
 @Injectable()
 export class RestHelperService {
 
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private modalService: ModalService, private router: Router) {
-    this.baseUrl = 'tac.johannes-wirth.de/';
+  constructor(private http: HttpClient, private tokenService: TokenService, private modalService: ModalService, private router: Router, private environment: EnvironmentService) {
+    this.baseUrl = environment.apiUrl;
   }
 
   public getHeaders(): HttpHeaders {
@@ -78,7 +79,7 @@ export class RestHelperService {
       } else if (status.message === 'TOKEN_EXPIRED') {
         console.log('token expired');
       }
-      const error = new CustomError(status.message, reload);
+      const error = new ModalError(status.message, reload);
       this.modalService.showError(error);
     } else {
       success(status.value, status.version);
@@ -88,7 +89,7 @@ export class RestHelperService {
   private handleCriticalStatus<T>(status: Status<T>, success: (resp: Status<T>) => void, reload: () => void) {
     if (status.error) {
       if (status.critical) {
-        const error = new CustomError(status.message, reload);
+        const error = new ModalError(status.message, reload);
         this.modalService.showError(error);
       } else {
         success(status);
@@ -106,13 +107,13 @@ export class RestHelperService {
    */
   public handleError(error: any, reload: () => void) {
     console.log(error);
-    let error2: CustomError;
+    let error2: ModalError;
     if (error.name === 'TimeoutError' || error.status === 0) {
-      error2 = new CustomError('TimeoutError', reload);
+      error2 = new ModalError('TimeoutError', reload);
     } else if (error.status) {
-      error2 = new CustomError(error.status, reload);
+      error2 = new ModalError(error.status, reload);
     } else {
-      error2 = new CustomError(error.message, reload);
+      error2 = new ModalError(error.message, reload);
     }
     this.modalService.showError(error2);
   }

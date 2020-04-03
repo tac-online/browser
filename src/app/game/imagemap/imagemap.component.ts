@@ -164,7 +164,7 @@ export class ImagemapComponent {
     const context = this.canvas.nativeElement.getContext('2d');
     const img = document.getElementById('marble' + position.player);
     if (position.transparent) {
-      context.globalAlpha = 0.85;
+      context.globalAlpha = 0.6;
     } else {
       context.globalAlpha = 1;
     }

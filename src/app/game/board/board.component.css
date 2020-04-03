@@ -1,0 +1,14 @@
+.track-field, .home-field, .base, .cardstack{
+  position: absolute;
+  display: inline-block;
+}
+
+img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.container {
+  position: relative;
+}

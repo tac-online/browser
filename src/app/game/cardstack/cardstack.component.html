@@ -1,0 +1,4 @@
+<div *ngIf="position" [tacPositioned]="position" (dragover)="checkDrop($event)" (drop)="drop($event)">
+  <tac-card *ngIf="gameStateService.getGame().lastCard" [card]="gameStateService.getGame().lastCard" [player]="-1" [tacPositioned]="cardsOffset"></tac-card>
+  <tac-card *ngIf="gameStateService.getGame().currentCard" [card]="gameStateService.getGame().currentCard" [player]="-1" [tacPositioned]="cardsOffset"></tac-card>
+</div>

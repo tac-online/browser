@@ -1,0 +1,3 @@
+<div *ngIf="position" [tacPositioned]="position" (dragover)="checkDrop($event)" (drop)="drop($event)">
+  <tac-marble *ngIf="field.occupier" [offset]="marbleOffset()" [marble]="field.occupier" [position]="getPosition()"></tac-marble>
+</div>

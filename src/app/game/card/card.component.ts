@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Field} from '../../core/model.game';
-import {Card} from '../../core/model.card';
+import {Component, Input, OnInit} from '@angular/core';
+import {Card, CardContainer} from '../../core/model.card';
+import {TurnStateService} from '../../core/turn-state.service';
 
 @Component({
   selector: 'tac-card',
@@ -11,11 +11,15 @@ export class CardComponent implements OnInit {
 
   @Input() public card: Card;
 
-  @Output() public playCard = new EventEmitter<Card>();
+  @Input() public player: number;
 
-  constructor() { }
+  constructor(public turnStateService: TurnStateService) { }
 
   ngOnInit() {
+  }
+
+  public getCardContainer() {
+    return new CardContainer(this.card);
   }
 
 }

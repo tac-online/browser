@@ -1,29 +1,32 @@
-.player0 {
-  position: absolute;
-  bottom: 0;
-}
-
-.player1 {
-  position: absolute;
-  bottom: 0;
-}
-
-.player0 h3 {
+.player0 .card-header {
   color: black;
   font-weight: bold;
 }
 
-.player1 h3 {
+.player1 .card-header {
   color: blue;
   font-weight: bold;
 }
 
-.player2 h3 {
+.player2 .card-header {
   color: lime;
   font-weight: bold;
 }
 
-.player3 h3 {
+.player3 .card-header {
   color: red;
   font-weight: bold;
+}
+
+.turn {
+  border-color: var(--clr-color-action-500);
+  --clr-card-box-shadow-color: var(--clr-card-clickable-border-color);
+}
+
+.card {
+  margin-top: 0.4rem;
+}
+
+.card-header, .card-block {
+  padding: .4rem .9rem;
 }

@@ -1,1 +1,7 @@
+.content-area {
+  padding-top: 1rem !important;
+}
 
+.branding {
+  min-width: 7rem;
+}

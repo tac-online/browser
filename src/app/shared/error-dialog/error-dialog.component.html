@@ -1,17 +1,24 @@
 <clr-modal [(clrModalOpen)]="open">
   <h3 class="modal-title">Error</h3>
-  <div class="modal-body">
+  <div *ngIf="error" class="modal-body">
     <div [ngSwitch]="error.message">
-      <span *ngSwitchCase="'TimeoutError'">Server nicht erreichbar. Bitte prüfen Sie ihre Internetverbindung.</span>
-      <span *ngSwitchCase="'UNKNOWN_GAME'">Dieses Spiel existiert nicht.</span>
-      <span *ngSwitchCase="'MOVE_NOT_ALLOWED'">Dieser Zug ist nicht erlaubt.</span>
-      <span *ngSwitchDefault>Unbekannter Fehler: {{error.message}}</span>
+      <span *ngSwitchCase="'TimeoutError'">Server not responding. Please check your internet connection.</span>
+      <span *ngSwitchCase="'UNKNOWN_GAME'">This game does not exist!</span>
+      <span *ngSwitchCase="'MOVE_NOT_ALLOWED'">This move is not allowed!</span>
+      <span *ngSwitchDefault>Unexpected error: {{error.message}}</span>
     </div>
   </div>
-  <div class="modal-footer">
+  <div *ngIf="error" class="modal-footer">
     <div>
-      <button type="button" class="btn btn-primary" (click)="reload()">Retry</button>
-      <button type="button" class="btn btn-outline" (click)="dismiss()">Back to Overview</button>
+      <button type="button" class="btn btn-primary" (click)="reload()">
+        <div [ngSwitch]="error.message">
+          <span *ngSwitchCase="'TimeoutError'">Retry</span>
+          <span *ngSwitchCase="'UNKNOWN_GAME'">Back to Overview</span>
+          <span *ngSwitchCase="'MOVE_NOT_ALLOWED'">Undo</span>
+          <span *ngSwitchDefault>Back to Overview</span>
+        </div>
+      </button>
+      <!--<button type="button" class="btn btn-outline" (click)="dismiss()">Back to Overview</button>-->
     </div>
     <!--<div *ngIf="error.critical; else notCritical">
       <button type="button" class="btn btn-primary" (click)="reload()">Retry</button>

@@ -3,7 +3,14 @@ import { CommonModule } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { MatchValueDirective } from './match-value.directive';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
-import {ClrButtonModule, ClrModalModule, ClrInputModule, ClrCheckboxModule, ClrPasswordModule} from '@clr/angular';
+import {
+  ClrButtonModule,
+  ClrModalModule,
+  ClrInputModule,
+  ClrCheckboxModule,
+  ClrPasswordModule,
+  ClrSignpostModule
+} from '@clr/angular';
 
 @NgModule({
   imports: [
@@ -25,10 +32,8 @@ import {ClrButtonModule, ClrModalModule, ClrInputModule, ClrCheckboxModule, ClrP
     ClrInputModule,
     ClrCheckboxModule,
     ClrPasswordModule,
-    ClrModalModule
-  ],
-  entryComponents: [
-    ErrorDialogComponent
+    ClrModalModule,
+    ClrSignpostModule
   ]
 })
 export class SharedModule { }

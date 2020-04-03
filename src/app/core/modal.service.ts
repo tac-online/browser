@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 
-import {CustomError} from './model';
+import {ModalError} from './model';
 
 /**
  * Provides modal functionality
@@ -12,7 +12,7 @@ export class ModalService {
   /**
    * @ignore
    */
-  private _errorString = new BehaviorSubject<CustomError>(null);
+  private _errorString = new BehaviorSubject<ModalError>(null);
 
   /**
    * An Observable to which a modal can subscribe to always receive the newest error
@@ -24,8 +24,7 @@ export class ModalService {
    *
    * @param error the error
    */
-  public showError(error: CustomError) {
-    console.log(error);
+  public showError(error: ModalError) {
     this._errorString.next(error);
   }
 }

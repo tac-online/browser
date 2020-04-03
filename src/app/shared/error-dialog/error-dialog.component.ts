@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CustomError} from '../../core/model';
+import {ModalError} from '../../core/model';
 import {Subscription} from 'rxjs';
 import {ModalService} from '../../core/modal.service';
 
@@ -10,11 +10,11 @@ import {ModalService} from '../../core/modal.service';
 })
 export class ErrorDialogComponent implements OnInit, OnDestroy {
 
-  public open: boolean;
+  public open = false;
 
   private subscription: Subscription;
 
-  public error: CustomError;
+  public error: ModalError;
 
   constructor(private modalService: ModalService) {
   }
@@ -27,7 +27,7 @@ export class ErrorDialogComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  private show(error: CustomError) {
+  private show(error: ModalError) {
     this.error = error;
     if (error) {
       this.open = true;

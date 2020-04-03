@@ -1,42 +1,94 @@
-<div class="row">
-  <div class="col-md-3">
-    <div *ngIf="game">
-      <tac-player [playernumber]="2" [cards]="game.cards[2]" [turn]="game.turn === 2" (playCard)="playCard($event)"></tac-player>
-      <tac-player [playernumber]="1" [cards]="game.cards[1]" [turn]="game.turn === 1" (playCard)="playCard($event)"></tac-player>
+<div class="clr-row">
+  <div class="clr-col-md-4">
+    <div class="players" *ngIf="gameStateService.getGame()">
+      <tac-player [playernumber]="0" [cards]="gameStateService.getGame().cards[0]" [turn]="gameStateService.getGame().turn === 0"></tac-player>
+      <tac-player [playernumber]="1" [cards]="gameStateService.getGame().cards[1]" [turn]="gameStateService.getGame().turn === 1"></tac-player>
+      <tac-player [playernumber]="2" [cards]="gameStateService.getGame().cards[2]" [turn]="gameStateService.getGame().turn === 2"></tac-player>
+      <tac-player [playernumber]="3" [cards]="gameStateService.getGame().cards[3]" [turn]="gameStateService.getGame().turn === 3"></tac-player>
     </div>
 
-    <div>
-      <button (mouseover)="showLastTurn()" (mouseout)="hideLastTurn()">Letzten Zug zeigen</button>
-    </div>
 
-    <h3 *ngIf="game && game.currentCard">Mögliche Aktionen für <span class="label label-default">{{game.currentCard}}</span></h3>
-
-    <div *ngIf="pickMarbleResolve">
-      <span class="label label-primary">Kugel auswählen</span>
-    </div>
-    <div *ngIf="pickFieldResolve">
-      <span class="label label-primary">Feld auswählen</span>
-    </div>
-
-    <div *ngIf="pressButtonResolve">
-      <button (click)="buttonPressed()">{{buttonText}}</button>
-    </div>
-
-    <div *ngIf="chooseCardDevilResolve">
-      Wähle eine Karte des nächsten Spielers
-      <tac-card *ngFor="let card of game.cards[(game.turn + 1) % 4]" [card]="card" (playCard)="cardChosen(card)"></tac-card>
-    </div>
-
-    <button *ngIf="game && game.currentCard" (click)="doAction()">Auswahl zurücksetzen</button>
 
   </div>
-  <img-map class="col-md-6" *ngIf="game" [board]="game.board" [currentCard]="game.currentCard" [specialMarbles]="specialMarbles" (clickField)="fieldPicked($event)" (clickMarble)="marblePicked($event)" #board></img-map>
-
-  <div class="col-md-3">
-    <div *ngIf="game">
-      <tac-player [playernumber]="3" [cards]="game.cards[3]" [turn]="game.turn === 3" (playCard)="playCard($event)"></tac-player>
-      <tac-player [playernumber]="0" [cards]="game.cards[0]" [turn]="game.turn === 0" (playCard)="playCard($event)"></tac-player>
+  <div class="clr-col-md-2 actions">
+    <div class="card">
+      <div class="card-header">
+        Play a Card <clr-icon *ngIf="turnStateService.cardPlayed" class="alert-icon" shape="check-circle" style="color: var(--clr-alert-success-icon-color,#3c8500)"></clr-icon>
+      </div>
+      <div *ngIf="turnStateService.playCard" class="card-block">
+        Drag a Card to the middle of the board
+      </div>
     </div>
+
+    <div class="card" *ngIf="turnStateService.moveMarble || turnStateService.marbleMoved">
+      <div class="card-header">
+        Move a Marble <clr-icon *ngIf="turnStateService.marbleMoved" class="alert-icon" shape="check-circle" style="color: var(--clr-alert-success-icon-color,#3c8500)"></clr-icon>
+      </div>
+      <div *ngIf="turnStateService.moveMarble && !turnStateService.marbleMoved" class="card-block">
+        Drag a Marble to move it
+      </div>
+    </div>
+
+    <div class="card" *ngIf="turnStateService.pressSkip">
+      <div class="card-header">
+        Skip next Player
+      </div>
+      <div class="card-block">
+        <button class="btn btn-primary" (click)="actionService.skipPlayerResolve()">Skip</button>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="turnStateService.pressFinish">
+      <div class="card-header">
+        Finish
+      </div>
+      <div class="card-block">
+        <button class="btn btn-primary" (click)="actionService.finishResolve()">Finish</button>
+      </div>
+    </div>
+
+    <!--<div class="card" *ngIf="gameStateService.turnFinish()">
+      <div class="card-header">
+        Finish Turn
+      </div>
+      <div class="card-block">
+        <button class="btn btn-primary">Finish</button>
+      </div>
+    </div>-->
+  </div>
+  <div class="clr-col-md-6">
+    <!--<div class="clr-row game-actions">
+      <div class="clr-col-md-6">
+
+        <h3 *ngIf="getGame() && getGame().currentCard">Mögliche Aktionen für <span class="label label-default">{{getGame().currentCard}}</span></h3>
+
+        <div *ngIf="pickMarbleResolve">
+          <span class="label label-primary">Kugel auswählen</span>
+        </div>
+        <div *ngIf="pickFieldResolve">
+          <span class="label label-primary">Feld auswählen</span>
+        </div>
+
+        <div *ngIf="curCardEight()">
+          <button (click)="actionService.skipPlayerResolve()">Aussetzen lassen</button>
+        </div>
+
+      </div>
+
+      <div *ngIf="chooseCardDevilResolve" class="clr-col-md-2 action-button">
+        Wähle eine Karte des nächsten Spielers
+        <tac-card *ngFor="let card of game.cards[(game.turn + 1) % 4]" [card]="card" (playCard)="cardChosen(card)"></tac-card>
+      </div>
+
+      <div class="clr-col-md-2 action-button">
+        <button *ngIf="game && game.currentCard" (click)="doAction()">Auswahl zurücksetzen</button>
+      </div>
+
+      <div class="clr-col-md-2 action-button">
+        <button (mouseover)="showLastTurn()" (mouseout)="hideLastTurn()">Letzten Zug zeigen</button>
+      </div>
+    </div>-->
+    <tac-board *ngIf="gameStateService.getGame()" [board]="gameStateService.getGame().board" [currentCard]="gameStateService.getGame().currentCard" #board></tac-board><!--[specialMarbles]="specialMarbles" (clickField)="fieldPicked($event)" (clickMarble)="marblePicked($event)" #board-->
 
   </div>
 </div>

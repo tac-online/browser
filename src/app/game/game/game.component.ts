@@ -1,15 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Field, FieldID, Game, Position} from '../../core/model.game';
-import {Action, MoveAction, OpenAction, RegularOpenAction, TricksterAction} from '../../core/model.action';
+import {FieldID} from '../../core/model.game';
 import {RestGameService} from '../../core/rest-game.service';
 import {WebsocketService} from '../../core/websocket.service';
-import {Observable, Subject} from 'rxjs';
-import {Card} from '../../core/model.card';
-import {ActionService} from '../action.service';
+import {ActionService} from '../../core/action.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {ImagemapComponent} from '../imagemap/imagemap.component';
-import {Coordinates} from '../../core/model.positions';
-import {ClientMessage} from '../../core/model';
+import {GameStateService} from '../../core/game-state.service';
+import {BoardComponent} from '../board/board.component';
+import {TurnStateService} from '../../core/turn-state.service';
 
 @Component({
   selector: 'tac-game',
@@ -19,31 +16,17 @@ import {ClientMessage} from '../../core/model';
 export class GameComponent implements OnInit {
 
   @ViewChild('board')
-  private board: ImagemapComponent;
+  private board: BoardComponent;
 
-  private version: number;
-  set game(game: Game) {
-    this._game = game;
-    if (game && game.currentCard) {
-      this.doAction();
-    }
-  }
-  get game(): Game {
-    return this._game;
-  }
-
-  private _game: Game;
-  private socket: Observable<ClientMessage>;
   public pickFieldResolve: (Field) => void;
   public pressButtonResolve: () => void;
   public buttonText: string;
   public pickMarbleResolve: (Position) => void;
   public chooseCardDevilResolve: (Card) => void;
-  public gameName: string;
 
   public specialMarbles: [FieldID, boolean][] = [];
 
-  constructor(private restService: RestGameService, private websocketService: WebsocketService, private actionService: ActionService, private route: ActivatedRoute, public router: Router) { }
+  constructor(private restService: RestGameService, private websocketService: WebsocketService, public actionService: ActionService, private route: ActivatedRoute, public router: Router, public gameStateService: GameStateService, public turnStateService: TurnStateService) { }
 
   ngOnInit() {
     const names = ['1', '2', '3', '4'];
@@ -51,25 +34,11 @@ export class GameComponent implements OnInit {
   }
 
   private loadData(params: Params) {
-    this.gameName = params['game'];
-    this.loadGame(this.gameName);
-    this.socket = this.websocketService.subscribe('tac-game-server', 'game/');
-    this.socket.subscribe(resp => {
-      if (this.version < resp.version) {
-        console.log('reloading');
-        this.loadGame(resp.payload);
-      }
-    });
+    const gameName = params['game'];
+    this.gameStateService.setGameName(gameName);
   }
 
-  private loadGame(game: string) {
-    this.restService.getGame(game, (game,version) => {
-      this.game = game;
-      this.version = version;
-    }, () => this.loadGame(game));
-  }
-
-  public doAction() {
+  /*public doAction() {
     if (this.board) {
       this.board.highlights = [];
       this.board.draw(false);
@@ -180,5 +149,5 @@ export class GameComponent implements OnInit {
 
   public hideLastTurn() {
     this.specialMarbles = [];
-  }
+  }*/
 }

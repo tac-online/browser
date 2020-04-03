@@ -1,0 +1,3 @@
+<div *ngIf="position" [tacPositioned]="position">
+  <tac-marble *ngFor="let marble of base.occupiers; let i=index" [marble]="marble" [offset]="marbleOffset(i)" [position]="getPosition()"></tac-marble>
+</div>

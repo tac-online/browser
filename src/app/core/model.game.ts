@@ -103,6 +103,7 @@ export class Game {
   devilPlayed: boolean;
   devilCard: Card;
   lastAction: Action;
+  lastCard: Card;
 
   constructor(board: Board, players: Player[], cards: Card[][], currentCard: Card, turn: number, devilPlayed: boolean, devilCard: Card, lastAction: Action) {
     this.board = board;

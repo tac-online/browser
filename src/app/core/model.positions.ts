@@ -1,4 +1,4 @@
-export const MARBLERADIUS = 12;
+export const MARBLERADIUS = 18;
 
 export class Coordinates {
   constructor(public x: number, public y: number, public radius: number) {}
@@ -6,7 +6,7 @@ export class Coordinates {
 
 export class FieldPosition extends Coordinates {
   constructor(public id: number, public x: number, public y: number) {
-    super(x, y, 13);
+    super(x, y, 15);
   }
 }
 
@@ -21,7 +21,7 @@ export class MarblePosition extends Coordinates {
 
 export class BasePosition extends Coordinates {
   constructor(public player: number, public x: number, public y: number) {
-    super(x, y, 40);
+    super(x, y, 50);
   }
 }
 
@@ -30,6 +30,8 @@ export class HomePosition extends FieldPosition {
     super(id, x, y);
   }
 }
+
+export const CARDSTACK: Coordinates = new Coordinates(492, 492, 130);
 
 export const TRACK: FieldPosition[] = [
   new FieldPosition(16,  47, 491),

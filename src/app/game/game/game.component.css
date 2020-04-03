@@ -1,3 +1,17 @@
 .label {
   cursor: default;
 }
+.game-actions {
+  height: 90px;
+}
+.action-button {
+  margin-top: 1rem;
+}
+
+.players {
+  margin-top: -0.4rem;
+}
+
+.actions {
+  margin-top: -1.2rem;
+}

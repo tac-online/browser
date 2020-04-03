@@ -4,6 +4,7 @@
 <img hidden id="marble3" [src]="'assets/marbles/red.png'" (load)="draw(false)">
 
 <div class="img-map" #container (window:resize)="draw(true)">
-  <img #image [src]="'assets/board.jpg'" (load)="draw(true)">
+  <div style="height: 10px; width: 10px"></div>
+  <img #image [src]="'assets/board-790.jpg'" (load)="draw(true)">
   <canvas #canvas (click)="onClick($event)" (mousemove)="onMousemove($event)" (mouseout)="onMouseout()"></canvas>
 </div>

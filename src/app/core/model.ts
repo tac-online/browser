@@ -2,7 +2,7 @@ export class Status<T> {
   constructor(public error: boolean, public value: T, public message: string, public version: number, public critical: boolean) {}
 }
 
-export class CustomError {
+export class ModalError {
   constructor(public message: string, public callback: () => void) {}
 }
 
